@@ -6,7 +6,10 @@ import 'package:angular2/core.dart';
 import 'package:angular2/router.dart';
 
 //import 'package:cl/app_component.dart';
-import 'config.dart' as config;
+import 'package:cl/config.dart' as config;
+import 'package:cl/me_comp.dart';
+import 'dart:async';
+
 
 class Param {
  static Param instance = new Param();
@@ -31,7 +34,16 @@ main() {
   template: """
   <header>
   <ul class='myul'>
-  <li *ngFor='let item of items'><a class='myli' [routerLink]="[item.name]">{{item.label}}</a></li></ul>
+
+  <li *ngIf='useHome==true'>
+  <a class='myli' [routerLink]="['Home']">Home</a>
+  </li>
+
+  <li *ngIf='useMe==true'>
+  <a class='myli' [routerLink]="['Me']">Me</a>
+  </li>
+
+  </ul>
   </header>
   <main style='clear:both;'>main</main>
   <br>
@@ -71,28 +83,25 @@ main() {
   path: "/",
   name: "Home",
   component: HomeComponent,
-  useAsDefault: true)]
+  useAsDefault: true),
+  const Route(
+      path: "/me",
+      name: "Me",
+      component: MeComponent,
+      data: const {"page":"me"},
+      useAsDefault: false),
+]
 )
 class AppComponent {
-  List<Item> items = [
-    new Item("0","/home","Home","Home"),
-    new Item("0","/me","Home","Me"),
-  ];
-
-
+  bool useHome = true;
+  bool useMe = true;
 }
 
 @Component(
   selector: "mybody",
   template:  """
     <div class="mybody">
-    <h1>Login</h1>
-    <div *ngIf='rootConfig.cookie.accessToken != ""'>
-    <a href='{{twitterLoginUrl}}'>use Twitter</a>
-    </div>
-    <div *ngIf='rootConfig.cookie.accessToken == ""'>
-    <span>Logined</span>
-    </div>
+    <h1>Home</h1>
     </div>
   """,
   styles: const[
@@ -113,10 +122,13 @@ class HomeComponent implements OnInit {
   ngOnInit() {
    twitterLoginUrl =  config.AppConfig.inst.twitterLoginUrl;
    print(_routeParams.params.toString());
-   if(_routeParams.params["isMaster"] != "") {
+   if(_routeParams.params.containsKey("token")) {
+     print("=====A=====");
      config.AppConfig.inst.cookie.accessToken = _routeParams.params["token"];
      config.AppConfig.inst.cookie.setIsMaster(_routeParams.params["isMaster"]);
      config.AppConfig.inst.cookie.userName = _routeParams.params["userName"];
+//     config.AppConfig.inst.cookie.
    }
   }
 }
+
