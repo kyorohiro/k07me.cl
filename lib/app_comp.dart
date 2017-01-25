@@ -30,7 +30,7 @@ import 'user_comp.dart';
   <a class='myli' [routerLink]="['Me']">Me</a>
   </div>
   <div *ngIf='rootConfig.cookie.accessToken != ""'>
-  <a class='myli' [routerLink]="['User',{user:rootConfig.cookie.userName}]">Me</a>
+  <a class='myli' [routerLink]="['User',{name:rootConfig.cookie.userName}]">Me</a>
   </div>
 
   <div *ngIf='rootConfig.cookie.accessToken == ""'>

@@ -13,13 +13,8 @@ import 'logout_dialog.dart';
     directives: const [LogoutDialog],
     template: """
     <div class="mybody">
-    <h1>Login</h1>
-    <div *ngIf='rootConfig.cookie.accessToken == ""'>
-    <a href='{{twitterLoginUrl}}'>use Twitter</a>
-    </div>
-    <div *ngIf='rootConfig.cookie.accessToken != ""'>
-    <buttomn (click)='onLogout(myDialoga)'>Logout</buttomn>
-    </div>
+    <h1>{{userName}}</h1>
+
 
     <my-logout-dialog #myDialoga
              [name]="'as'">
@@ -39,6 +34,7 @@ import 'logout_dialog.dart';
 class UserComponent implements OnInit {
   String twitterLoginUrl = "";
   final RouteParams _routeParams;
+  String userName = "";
 
   UserComponent(this._routeParams);
 
@@ -46,6 +42,7 @@ class UserComponent implements OnInit {
 
   ngOnInit() {
     twitterLoginUrl = config.AppConfig.inst.twitterLoginUrl;
+    userName = _routeParams.get("name");
   }
 
   onLogout(LogoutDialog _dialog) async {
