@@ -131,11 +131,26 @@ class MiniProp {
     setPropObject(category, key, value);
   }
 
+
   List<String> getPropStringList(String category, String key, List<String> defaultValue) {
     var v = getPropObject(category, key, defaultValue);
     if (v is List) {
       for(var vv in v) {
         if(!(vv is String)) {
+          return defaultValue;
+        }
+      }
+      return v;
+    } else {
+      return defaultValue;
+    }
+  }
+
+  List<num> getPropNumList(String category, String key, List<num> defaultValue) {
+    var v = getPropObject(category, key, defaultValue);
+    if (v is List) {
+      for(var vv in v) {
+        if(!(vv is num || vv is double || vv is int)) {
           return defaultValue;
         }
       }
