@@ -10,7 +10,7 @@ import 'package:cl/config.dart' as config;
 import 'package:cl/me_comp.dart';
 import 'dart:async';
 import 'package:cl/login_dialog.dart';
-
+import 'package:cl/logout_dialog.dart';
 
 class Param {
  static Param instance = new Param();
@@ -30,7 +30,7 @@ main() {
 
 @Component(
   selector: "my-app",
-  directives: const [LoginDialog, ROUTER_DIRECTIVES],
+  directives: const [LoginDialog, LogoutDialog,ROUTER_DIRECTIVES],
   providers: const [ROUTER_PROVIDERS],
   template: """
   <header>
@@ -44,10 +44,12 @@ main() {
   <a class='myli' [routerLink]="['Me']">Me</a>
   </div>
 
-  <div>
+  <div *ngIf='rootConfig.cookie.accessToken == ""'>
   <a class='mylr' (click)='onLogin(myDialoga)'>Login</a>
   </div>
-
+  <div *ngIf='rootConfig.cookie.accessToken != ""'>
+  <a class='mylr' (click)='onLogout(myLogoutDialoga)'>Logout</a>
+  </div>
   </nav>
   </header>
   <main style='clear:both;'>main</main>
@@ -57,6 +59,8 @@ main() {
 
   <my-login-dialog [name]="'as'" #myDialoga>
   </my-login-dialog>
+   <my-logout-dialog [name]="'as'" #myLogoutDialoga>
+  </my-logout-dialog>
   """,
   styles: const ["""
   .myul {
@@ -117,7 +121,11 @@ main() {
 class AppComponent {
   bool useHome = true;
   bool useMe = true;
+  config.AppConfig rootConfig = config.AppConfig.inst;
   onLogin(LoginDialog d) {
+    d.open();
+  }
+  onLogout(LogoutDialog d) {
     d.open();
   }
 }
