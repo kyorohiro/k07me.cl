@@ -3,22 +3,19 @@ import 'config.dart' as config;
 import 'package:angular2_components/angular2_components.dart';
 
 @Component(
-  selector: 'my-logout-dialog',
+  selector: 'my-login-dialog',
   template: """
 <modal #wrappingModal>
   <material-dialog style='width:80%'>
     <h3 header>
-        Logout?
+        Login?
     </h3>
-    <p>
-    ...
-    </p>
+      <a href='{{twitterLoginUrl}}'>use Twitter</a>
+      <br style='clear:both;'>
     <div footer>
+
       <material-button autoFocus clear-size (click)="onCancel(wrappingModal)">
         Cancel
-      </material-button>
-      <material-button autoFocus clear-size (click)="onLogout(wrappingModal)">
-        Logout
       </material-button>
     </div>
   </material-dialog>
@@ -27,9 +24,14 @@ import 'package:angular2_components/angular2_components.dart';
   directives: const [materialDirectives],
   providers: const [materialProviders],
 )
-class LogoutDialog {
+class LoginDialog implements OnInit{
+  String twitterLoginUrl = "";
   @ViewChild('wrappingModal')
   ModalComponent wrappingModal;
+
+  ngOnInit() {
+    twitterLoginUrl = config.AppConfig.inst.twitterLoginUrl;
+  }
 
   void open() {
     wrappingModal.open();

@@ -9,6 +9,7 @@ import 'package:angular2/router.dart';
 import 'package:cl/config.dart' as config;
 import 'package:cl/me_comp.dart';
 import 'dart:async';
+import 'package:cl/login_dialog.dart';
 
 
 class Param {
@@ -29,7 +30,7 @@ main() {
 
 @Component(
   selector: "my-app",
-  directives: const [ROUTER_DIRECTIVES],
+  directives: const [LoginDialog, ROUTER_DIRECTIVES],
   providers: const [ROUTER_PROVIDERS],
   template: """
   <header>
@@ -44,7 +45,7 @@ main() {
   </div>
 
   <div>
-  <a class='mylr'>Login</a>
+  <a class='mylr' (click)='onLogin(myDialoga)'>Login</a>
   </div>
 
   </nav>
@@ -53,6 +54,9 @@ main() {
   <br>
   <router-outlet></router-outlet>
   <hooter>hooter</hooter>
+
+  <my-login-dialog [name]="'as'" #myDialoga>
+  </my-login-dialog>
   """,
   styles: const ["""
   .myul {
@@ -113,6 +117,9 @@ main() {
 class AppComponent {
   bool useHome = true;
   bool useMe = true;
+  onLogin(LoginDialog d) {
+    d.open();
+  }
 }
 
 @Component(
