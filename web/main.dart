@@ -33,17 +33,21 @@ main() {
   providers: const [ROUTER_PROVIDERS],
   template: """
   <header>
-  <ul class='myul'>
+  <nav class='myul'>
 
-  <li *ngIf='useHome==true'>
+  <div *ngIf='useHome==true'>
   <a class='myli' [routerLink]="['Home']">Home</a>
-  </li>
+  </div>
 
-  <li *ngIf='useMe==true'>
+  <div *ngIf='useMe==true'>
   <a class='myli' [routerLink]="['Me']">Me</a>
-  </li>
+  </div>
 
-  </ul>
+  <div>
+  <a class='mylr'>Login</a>
+  </div>
+
+  </nav>
   </header>
   <main style='clear:both;'>main</main>
   <br>
@@ -55,18 +59,21 @@ main() {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    width: 200px;
+    width: 600px;
+    height: 34px;
     background-color: #f1f1f1;
-    border: 1px solid #555;
+ #   border: 1px solid #555;
   }
   .myli {
     display: block;
     float: left;
+    font-size: 16px;
     color: #000000;
     text-decoration: none;
     padding: 8px 16px;
+    margine: 1px;
     text-align: center;
-        border: 1px solid #555;
+    border: 1px solid #555;
   }
   .myli .selected {
     background-color: #4CAF50;
@@ -75,6 +82,17 @@ main() {
   .myli:hover {
     background-color: #555;
     color: white;
+  }
+  .mylr {
+    display: block;
+    float: right;
+    font-size: 16px;
+    color: #000000;
+    text-decoration: none;
+    padding: 8px 16px;
+    margine: 1px;
+    text-align: center;
+    border: 1px solid #555;
   }
   """],
 )
