@@ -20,7 +20,7 @@ class Html5Requester extends Requester {
         req.setRequestHeader(k, headers[k]);
       }
 
-      req.onReadyStateChange.listen((html.ProgressEvent e) {
+      req.onReadyStateChange.listen((e) {
         if (req.readyState == html.HttpRequest.DONE) {
           Map<String,List<String>> headerss = {};
           for(String key in req.responseHeaders.keys) {
