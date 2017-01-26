@@ -15,9 +15,11 @@ import 'logout_dialog.dart';
     directives: const [LogoutDialog],
     template: """
     <div class="mybody">
-    <h1>{{displayName}}</h1>
-    <p>name:{{userName}}</p>
-    <p>icon:{{iconUrl}}</p>
+    <img *ngIf='iconUrl==""' src='/assets/egg.png'>
+    <img *ngIf='iconUrl!=""' src='iconUrl'>
+    <div style='font-size:24px;'>{{displayName}}</div>
+    <div style='fomt-size:8px;'>({{userName}})</div>
+
     <p>cont:{{content}}</p>
 
     <my-logout-dialog #myDialoga
