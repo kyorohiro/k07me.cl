@@ -8,11 +8,12 @@ import 'dart:async';
 //import 'package:cl/hello_dialog/hello_dialog.dart';
 //
 import 'logout_dialog.dart';
+import 'user_icon_dialog.dart';
 
 //
 @Component(
     selector: "my-user",
-    directives: const [LogoutDialog],
+    directives: const [UserIconDialog],
     template: """
     <div class="mybody">
     <img *ngIf='iconUrl==""' src='/assets/egg.png'>
@@ -23,9 +24,11 @@ import 'logout_dialog.dart';
     <p>cont:{{content}}</p>
 
     <div *ngIf='isMe'>
-      <button (click)='onUpdateIcon()'> updateIcon</button>
+      <button (click)='onUpdateIcon(myDialoga)'> updateIcon</button>
     </div>
 
+    <my-user-icon-dialog [name]="'as'" #myDialoga>
+    </my-user-icon-dialog>
 
     </div>
   """,
@@ -67,7 +70,7 @@ class UserComponent implements OnInit {
 
     }
   }
-  onUpdateIcon() {
-
+  onUpdateIcon(UserIconDialog d) {
+    d.open();
   }
 }
