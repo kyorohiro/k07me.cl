@@ -15,9 +15,10 @@ import 'logout_dialog.dart';
     directives: const [LogoutDialog],
     template: """
     <div class="mybody">
-    <h1>{{userName}}</h1>
     <h1>{{displayName}}</h1>
-
+    <p>name:{{userName}}</p>
+    <p>icon:{{iconUrl}}</p>
+    <p>cont:{{content}}</p>
 
     <my-logout-dialog #myDialoga
              [name]="'as'">
@@ -39,6 +40,8 @@ class UserComponent implements OnInit {
   final RouteParams _routeParams;
   String userName = "";
   String displayName = "";
+  String iconUrl = "";
+  String content = "";
 
   UserComponent(this._routeParams);
 
@@ -54,6 +57,8 @@ class UserComponent implements OnInit {
     try {
       UserInfoProp infoProp = await userNBox.getUserInfo(userName);
       displayName = infoProp.displayName;
+      iconUrl = infoProp.iconUrl;
+      content = infoProp.content;
     } catch(e){
 
     }

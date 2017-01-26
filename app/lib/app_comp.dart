@@ -61,6 +61,11 @@ import 'user_comp.dart';
     background-color: #f1f1f1;
  #   border: 1px solid #555;
   }
+  @media (max-width: 600px) {
+    .myul {
+      width:100%;
+     }
+  }
   .myli {
     display: block;
     float: left;
