@@ -11,7 +11,10 @@ class ImageUtil {
     r.onLoad.listen((html.ProgressEvent e) {
       html.CanvasRenderingContext2D c = canvas.context2D;
       imageTmp.onLoad.listen((html.Event e) {
-        c.drawImageToRect(imageTmp, new html.Rectangle(0, 0, canvas.width, canvas.height), sourceRect: new html.Rectangle(0, 0, imageTmp.width, imageTmp.height));
+        c.drawImageToRect(
+            imageTmp, new html.Rectangle(0, 0, canvas.width, canvas.height),
+            sourceRect: new html.Rectangle(
+                0, 0, imageTmp.width, imageTmp.height));
         co.complete(imageTmp);
       });
       imageTmp.onError.listen((html.Event e) {
@@ -25,7 +28,8 @@ class ImageUtil {
     return co.future;
   }
 
-  static Future<html.ImageElement> resizeImage(html.ImageElement imageTmp, {int nextHeight: 300}) async {
+  static Future<html.ImageElement> resizeImage(html.ImageElement imageTmp,
+      {int nextHeight: 300}) async {
     html.CanvasElement canvasElm = new html.CanvasElement();
     html.CanvasRenderingContext2D context = canvasElm.context2D;
     canvasElm.width = ((nextHeight * imageTmp.width) ~/ imageTmp.height);
@@ -38,7 +42,9 @@ class ImageUtil {
     print("##<ZZZZZ>#${ret.width} ${ret.height} ${canvasElm.width}, ${canvasElm.height}");
     return ret;
   }
+}
 
+/*
   static Future<html.ImageElement> makeImage(String message, {String color: "rgb(2,169,159)", int fontsize: 25, int height: 300, int width: 300}) async {
     html.CanvasElement canvasElm = new html.CanvasElement();
     html.CanvasRenderingContext2D context = canvasElm.context2D;
@@ -91,5 +97,4 @@ class ImageUtil {
     ret.width = 300;
     ret.height = 300;
     return ret;
-  }
-}
+  }*/
