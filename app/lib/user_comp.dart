@@ -22,9 +22,10 @@ import 'logout_dialog.dart';
 
     <p>cont:{{content}}</p>
 
-    <my-logout-dialog #myDialoga
-             [name]="'as'">
-    </my-logout-dialog>
+    <div *ngIf='isMe'>
+      <button (click)='onUpdateIcon()'> updateIcon</button>
+    </div>
+
 
     </div>
   """,
@@ -44,6 +45,7 @@ class UserComponent implements OnInit {
   String displayName = "";
   String iconUrl = "";
   String content = "";
+  bool get isMe => (rootConfig.cookie.userName==userName);
 
   UserComponent(this._routeParams);
 
@@ -65,8 +67,7 @@ class UserComponent implements OnInit {
 
     }
   }
+  onUpdateIcon() {
 
-  onLogout(LogoutDialog _dialog) async {
-    _dialog.open();
   }
 }
