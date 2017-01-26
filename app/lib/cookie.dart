@@ -7,7 +7,7 @@ class Cookie {
       return binary[key];
     }
     var v = cookie.get(key);
-    return (v == null?getValue:v);
+    return (v == null?defaultValue:v);
   }
 
   void setValue(String key, String v) {
