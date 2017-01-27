@@ -102,21 +102,30 @@ class InputImageDialog implements OnInit {
   }
 }
 
+typedef Future<String> OnFileFunc(InputImageDialog d);
+
 class InputImageDialogParam {
-  final String title;
-  final String message;
+  String title;
+  String message;
   String ok;
   String cancel;
   int get imgWidth => 300;
   int get imgHeight => -1;
+  OnFileFunc onFileFunc;
 
-
-  InputImageDialogParam({this.title:"File",this.message:"select file!!",this.ok:"OK",this.cancel:"Cancel"}){
+  InputImageDialogParam({this.title:"File",this.message:"select file!!",this.ok:"OK",this.cancel:"Cancel",
+  onFileFunc: null}){
   }
 
   /**
    * if failed to do onFind func, then return error message.
    */
-  Future<String> onFile(InputImageDialog d){}
+  Future<String> onFile(InputImageDialog d) async {
+    if (onFileFunc == null) {
+      return "";
+    } else {
+      return onFileFunc(d);
+    }
+  }
 }
 

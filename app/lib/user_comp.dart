@@ -50,6 +50,7 @@ class UserComponent implements OnInit {
   String iconUrl = "";
   String content = "";
   bool get isMe => (rootConfig.cookie.userName==userName);
+
   InputImageDialogParam param = new InputImageDialogParam();
 
   UserComponent(this._routeParams);
