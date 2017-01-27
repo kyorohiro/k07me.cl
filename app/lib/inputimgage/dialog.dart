@@ -66,8 +66,22 @@ class InputImageDialog implements OnInit {
   onCancel(ModalComponent comp) {
     wrappingModal.close();
   }
+
   onFile(ModalComponent comp) {
-    wrappingModal.close();
+    isloading = true;
+    try {
+      var ret = param.onFile(this);
+      if (ret != "" && ret != null) {
+        errorMessage = ret;
+      } else {
+        errorMessage = "";
+        wrappingModal.close();
+      }
+    } catch (e) {
+      errorMessage = "failed to (${e})";
+    } finally {
+      isloading = false;
+    }
   }
 
   onInput(html.InputElement i,html.DivElement c) async {
@@ -80,12 +94,7 @@ class InputImageDialog implements OnInit {
       var img1 = await imgutil.ImageUtil.resizeImage(img);
       c.children.add(img1);
       currentImage = img1;
-      var ret = param.onFind(this);
-      if(ret !="" && ret != null) {
-        errorMessage = ret;
-      } else {
-        errorMessage = "";
-      }
+
     } catch(e){
       errorMessage = "failed to (${e})";
     } finally{
@@ -109,6 +118,6 @@ class InputImageDialogParam {
   /**
    * if failed to do onFind func, then return error message.
    */
-  String onFind(InputImageDialog d){}
+  String onFile(InputImageDialog d){}
 }
 
