@@ -30,12 +30,12 @@ import 'dart:async';
     <material-spinner *ngIf='isloading'></material-spinner>
     <div #imgc></div>
     <div footer>
-      <input #in type="file" id="upload" (change)='onInput(in,imgc)'>
+      <input #in *ngIf='isloading==false' type="file" id="upload" (change)='onInput(in,imgc)'>
 
-      <material-button autoFocus clear-size (click)="onCancel(wrappingModal)" class='inputimage-dialog-cancelbutton'>
+      <material-button *ngIf='isloading==false' autoFocus clear-size (click)="onCancel(wrappingModal)" class='inputimage-dialog-cancelbutton'>
         {{param.cancel}}
       </material-button>
-      <material-button *ngIf='currentImage!=null' autoFocus clear-size (click)="onFile(wrappingModal)" class='inputimage-dialog-okbutton'>
+      <material-button *ngIf='currentImage!=null||isloading==false' autoFocus clear-size (click)="onFile(wrappingModal)" class='inputimage-dialog-okbutton'>
         {{param.ok}}
       </material-button>
     </div>

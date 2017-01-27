@@ -11,11 +11,12 @@ import 'dart:convert' as conv;
 import 'logout_dialog.dart';
 //import 'user_icon_dialog.dart';
 import 'inputimgage/dialog.dart';
+import 'updateuser/dialog.dart';
 
 //
 @Component(
     selector: "my-user",
-    directives: const[InputImageDialog],// [UserIconDialog],
+    directives: const[InputImageDialog,UpdateUserDialog],
     template: """
     <div class="mybody">
     <img *ngIf='iconUrl==""' src='/assets/egg.png'>
@@ -28,11 +29,13 @@ import 'inputimgage/dialog.dart';
 
     <div *ngIf='isMe'>
       <button (click)='onUpdateIcon(myDialoga)'> updateIcon</button>
+      <button (click)='onUpdateInfo(myDialogb)'> updateIcon</button>
     </div>
 
     <inputimage-dialog [param]="param" #myDialoga>
     </inputimage-dialog>
-
+    <updateuser-dialog [param]="parama" #myDialogb>
+    </updateuser-dialog>
     </div>
   """,
     styles: const[
@@ -53,7 +56,9 @@ class UserComponent implements OnInit {
   String content = "";
   bool get isMe => (rootConfig.cookie.userName==userName);
 
+  //
   InputImageDialogParam param = new InputImageDialogParam();
+  UpdateUserDialogParam parama = new UpdateUserDialogParam();
 
   UserComponent(this._routeParams);
 
@@ -87,6 +92,10 @@ class UserComponent implements OnInit {
       UploadFileProp prop = await meNBox.updateFile(rootConfig.cookie.accessToken,"/","icon.png", i,userName: userName);
       iconUrl = await userNBox.createBlobUrlFromKey(prop.blobKey);
     };
+    d.open();
+  }
+
+  onUpdateInfo(UpdateUserDialog d) {
     d.open();
   }
 }

@@ -5,36 +5,36 @@ import 'dart:async';
 
 
 @Component(
-  selector: 'uploaduser-dialog',
+  selector: 'updateuser-dialog',
   styles: const [
     """
-    .uploaduser-dialog-title {
+    .updateuser-dialog-title {
     }
-    .uploaduser-dialog-message {
+    .updateuser-dialog-message {
     }
-    .uploaduser-dialog-errormessage {
+    .updateuser-dialog-errormessage {
     }
-    .uploaduser-dialog-cancelbutton{
+    .updateuser-dialog-cancelbutton{
     }
-    .uploaduser-dialog-okbutton{
+    .updateuser-dialog-okbutton{
     }
     """,
   ],
   template: """
 <modal #wrappingModal>
   <material-dialog style='width:80%'>
-    <div *ngIf='errorMessage!=""' class='uploaduser-dialog-errormessage'>{{errorMessage}}</div>
-    <h3 class='uploaduser-dialog-title' header>{{param.title}}</h3>
-    <p class='uploaduser-dialog-message'>{{param.message}}</p>
+    <div *ngIf='errorMessage!=""' class='updateuser-dialog-errormessage'>{{errorMessage}}</div>
+    <h3 class='updateuser-dialog-title' header>{{param.title}}</h3>
+    <p class='updateuser-dialog-message'>{{param.message}}</p>
     <material-spinner *ngIf='isloading'></material-spinner>
     <div #imgc></div>
     <div footer>
-      <input #in type="file" id="upload" (change)='onInput(in,imgc)'>
 
-      <material-button autoFocus clear-size (click)="onCancel(wrappingModal)" class='uploaduser-dialog-cancelbutton'>
+
+      <material-button autoFocus clear-size (click)="onCancel(wrappingModal)" class='updateuser-dialog-cancelbutton'>
         {{param.cancel}}
       </material-button>
-      <material-button *ngIf='currentImage!=null' autoFocus clear-size (click)="onUpdate(wrappingModal)" class='uploaduser-dialog-okbutton'>
+      <material-button *ngIf='currentImage!=null' autoFocus clear-size (click)="onUpdate(wrappingModal)" class='updateuser-dialog-okbutton'>
         {{param.ok}}
       </material-button>
     </div>
