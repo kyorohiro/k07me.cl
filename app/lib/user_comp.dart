@@ -8,12 +8,13 @@ import 'dart:async';
 //import 'package:cl/hello_dialog/hello_dialog.dart';
 //
 import 'logout_dialog.dart';
-import 'user_icon_dialog.dart';
+//import 'user_icon_dialog.dart';
+import 'inputimgage/dialog.dart';
 
 //
 @Component(
     selector: "my-user",
-    directives: const [UserIconDialog],
+    directives: const[InputImageDialog],// [UserIconDialog],
     template: """
     <div class="mybody">
     <img *ngIf='iconUrl==""' src='/assets/egg.png'>
@@ -27,8 +28,8 @@ import 'user_icon_dialog.dart';
       <button (click)='onUpdateIcon(myDialoga)'> updateIcon</button>
     </div>
 
-    <my-user-icon-dialog [name]="'as'" #myDialoga>
-    </my-user-icon-dialog>
+    <inputimage-dialog [param]="param" #myDialoga>
+    </inputimage-dialog>
 
     </div>
   """,
@@ -49,6 +50,7 @@ class UserComponent implements OnInit {
   String iconUrl = "";
   String content = "";
   bool get isMe => (rootConfig.cookie.userName==userName);
+  InputImageDialogParam param = new InputImageDialogParam();
 
   UserComponent(this._routeParams);
 
@@ -70,7 +72,7 @@ class UserComponent implements OnInit {
 
     }
   }
-  onUpdateIcon(UserIconDialog d) {
+  onUpdateIcon(InputImageDialog d) {
     d.open();
   }
 }

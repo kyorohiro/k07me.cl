@@ -1,21 +1,19 @@
 import 'package:angular2/core.dart';
-import 'config.dart' as config;
 import 'package:angular2_components/angular2_components.dart';
 import 'dart:html' as html;
 import 'imageutil.dart' as imgutil;
 import 'dart:async';
 
+
 @Component(
-  selector: 'my-user-icon-dialog',
+  selector: 'inputimage-dialog',
   template: """
 <modal #wrappingModal>
   <material-dialog style='width:80%'>
-    <h3 header>
-        File
-    </h3>
-    <p>{{ga}}</p>
+    <div *ngIf='errorMessage!=""'>{{errorMessage}}</div>
+    <h3 header>{{param.title}}</h3>
+    <p>{{param.message}}</p>
     <material-spinner *ngIf='isloading'></material-spinner>
-    <!--img *ngIf='useImg' src='src'-->
     <div #imgc></div>
     <div footer>
       <input #in type="file" id="upload" (change)='onInput(in,imgc)'>
@@ -33,13 +31,19 @@ import 'dart:async';
   directives: const [materialDirectives],
   providers: const [materialProviders],
 )
-class UserIconDialog {
+class InputImageDialog implements OnInit {
   @ViewChild('wrappingModal')
   ModalComponent wrappingModal;
+
+  @Input()
+  InputImageDialogParam param;
+
   bool isloading = false;
-  bool useImg = false;
-  String src = "";
   html.ImageElement currentImage = null;
+  String errorMessage = "";
+
+  ngOnInit(){
+  }
 
   void open() {
     wrappingModal.open();
@@ -51,7 +55,6 @@ class UserIconDialog {
   onFile(ModalComponent comp) {
     wrappingModal.close();
   }
-  String ga = "";
 
   onInput(html.InputElement i,html.DivElement c) async {
     isloading = true;
@@ -63,13 +66,32 @@ class UserIconDialog {
       var img1 = await imgutil.ImageUtil.resizeImage(img);
       c.children.add(img1);
       currentImage = img1;
-      useImg = true;
-      print("${src}");
+      var ret = param.onFind(this);
+      if(ret !="" && ret != null) {
+        errorMessage = ret;
+      } else {
+        errorMessage = "";
+      }
     } catch(e){
-      ga = "Failed";
-      useImg = false;
+      errorMessage = "failed to (${e})";
     } finally{
       isloading = false;
     }
   }
 }
+
+class InputImageDialogParam {
+  final String title;
+  final String message;
+  int get imgWidth => 300;
+  int get imgHeight => -1;
+
+  InputImageDialogParam({this.title:"File",this.message:"select file!!"}){
+  }
+
+  /**
+   * if failed to do onFind func, then return error message.
+   */
+  String onFind(InputImageDialog d){}
+}
+
