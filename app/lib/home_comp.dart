@@ -40,9 +40,9 @@ class HomeComponent implements OnInit {
     print(_routeParams.params.toString());
     if(_routeParams.params.containsKey("token")) {
       print("=====A=====");
-      config.AppConfig.inst.cookie.accessToken = _routeParams.params["token"];
+      config.AppConfig.inst.cookie.accessToken = Uri.decodeFull(_routeParams.params["token"]);
       config.AppConfig.inst.cookie.setIsMaster(_routeParams.params["isMaster"]);
-      config.AppConfig.inst.cookie.userName = _routeParams.params["userName"];
+      config.AppConfig.inst.cookie.userName = Uri.decodeFull(_routeParams.params["userName"]);
 //     config.AppConfig.inst.cookie.
     }
   }

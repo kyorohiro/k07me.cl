@@ -41,15 +41,23 @@ class UserNBox {
   String backAddr;
   UserNBox(this.builder, this.backAddr) {}
 
-  Future<String> makeUserBlobFromKey(String key) async {
-    return makeUserBlob(key);
+  Future<String> createBlobUrlFromKey(String key, {String sign: ""}) async {
+    if(key == "" || key == null) {
+      return "";
+    }
+    key = key.replaceAll("key://", "");
+    return [
+      """${backAddr}/api/v1/user/getblob""", //
+      """?key=${Uri.encodeComponent(key)}""", //
+      """&sign=${Uri.encodeComponent(sign)}""",
+    ].join("");
   }
 
-  Future<String> makeUserBlobPath(String useName, String dir, String file, {String sign: ""}) async {
-    return makeUserBlob("", useName: useName, dir: dir, file: file, sign: sign);
+  Future<String> createBlobUrl(String useName, String dir, String file, {String sign: ""}) async {
+    return _makeUserBlob("", useName: useName, dir: dir, file: file, sign: sign);
   }
 
-  Future<String> makeUserBlob(String key, {String useName: "", String dir: "", String file: "", String sign: ""}) async {
+  Future<String> _makeUserBlob(String key, {String useName: "", String dir: "", String file: "", String sign: ""}) async {
     key = key.replaceAll("key://", "");
     return [
       """${backAddr}/api/v1/user/getblob""", //

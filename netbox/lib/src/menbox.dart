@@ -26,6 +26,18 @@ class MeNBox {
     return """${backAddr}/api/v1/facebook/tokenurl/redirect?${callbackopt}=${Uri.encodeComponent(callbackAddr)}""";
   }
 
+  Future<String> createBlobUrlFromKey(String key, {String sign: ""}) async {
+    if(key == "" || key == null) {
+      return "";
+    }
+    key = key.replaceAll("key://", "");
+    return [
+      """${backAddr}/api/v1/user/getblob""", //
+      """?key=${Uri.encodeComponent(key)}""", //
+      """&sign=${Uri.encodeComponent(sign)}""",
+    ].join("");
+  }
+
   MeNBoxLoginCB getInfoFromLoginCallback(String url) {
     Uri urlObj = Uri.parse(url);
     var ret = new MeNBoxLoginCB();
