@@ -67,10 +67,10 @@ class InputImageDialog implements OnInit {
     wrappingModal.close();
   }
 
-  onFile(ModalComponent comp) {
+  onFile(ModalComponent comp) async {
     isloading = true;
     try {
-      var ret = param.onFile(this);
+      var ret = await param.onFile(this);
       if (ret != "" && ret != null) {
         errorMessage = ret;
       } else {
@@ -94,7 +94,6 @@ class InputImageDialog implements OnInit {
       var img1 = await imgutil.ImageUtil.resizeImage(img);
       c.children.add(img1);
       currentImage = img1;
-
     } catch(e){
       errorMessage = "failed to (${e})";
     } finally{
@@ -118,6 +117,6 @@ class InputImageDialogParam {
   /**
    * if failed to do onFind func, then return error message.
    */
-  String onFile(InputImageDialog d){}
+  Future<String> onFile(InputImageDialog d){}
 }
 
