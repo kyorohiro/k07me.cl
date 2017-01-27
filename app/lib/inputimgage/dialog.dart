@@ -28,10 +28,10 @@ import 'dart:async';
     <h3 class='inputimage-dialog-title' header>{{param.title}}</h3>
     <p class='inputimage-dialog-message'>{{param.message}}</p>
     <material-spinner *ngIf='isloading'></material-spinner>
-    <div #imgc></div>
-    <div footer>
-      <input #in *ngIf='isloading==false' type="file" id="upload" (change)='onInput(in,imgc)'>
+    <div #imgc></div><br>
+    <input #in *ngIf='isloading==false' type="file" id="upload" (change)='onInput(in,imgc)'>
 
+    <div footer>
       <material-button *ngIf='isloading==false' autoFocus clear-size (click)="onCancel(wrappingModal)" class='inputimage-dialog-cancelbutton'>
         {{param.cancel}}
       </material-button>
@@ -57,6 +57,9 @@ class InputImageDialog implements OnInit {
   String errorMessage = "";
 
   ngOnInit(){
+    if(param == null) {
+      param = new InputImageDialogParam();
+    }
   }
 
   void open() {
@@ -87,6 +90,7 @@ class InputImageDialog implements OnInit {
   onInput(html.InputElement i,html.DivElement c) async {
     isloading = true;
     try {
+      c.children.clear();
       if(i.value.length <= 0) {
         return;
       }
@@ -128,4 +132,5 @@ class InputImageDialogParam {
     }
   }
 }
+
 
