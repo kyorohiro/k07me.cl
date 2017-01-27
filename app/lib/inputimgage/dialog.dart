@@ -7,22 +7,36 @@ import 'dart:async';
 
 @Component(
   selector: 'inputimage-dialog',
+  styles: const [
+    """
+    .inputimage-dialog-title {
+    }
+    .inputimage-dialog-message {
+    }
+    .inputimage-dialog-errormessage {
+    }
+    .inputimage-dialog-cancelbutton{
+    }
+    .inputimage-dialog-okbutton{
+    }
+    """,
+  ],
   template: """
 <modal #wrappingModal>
   <material-dialog style='width:80%'>
-    <div *ngIf='errorMessage!=""'>{{errorMessage}}</div>
-    <h3 header>{{param.title}}</h3>
-    <p>{{param.message}}</p>
+    <div *ngIf='errorMessage!=""' class='inputimage-dialog-errormessage'>{{errorMessage}}</div>
+    <h3 class='inputimage-dialog-title' header>{{param.title}}</h3>
+    <p class='inputimage-dialog-message'>{{param.message}}</p>
     <material-spinner *ngIf='isloading'></material-spinner>
     <div #imgc></div>
     <div footer>
       <input #in type="file" id="upload" (change)='onInput(in,imgc)'>
 
-      <material-button autoFocus clear-size (click)="onCancel(wrappingModal)">
-        Cancel
+      <material-button autoFocus clear-size (click)="onCancel(wrappingModal)" class='inputimage-dialog-cancelbutton'>
+        {{param.cancel}}
       </material-button>
-      <material-button *ngIf='currentImage!=null' autoFocus clear-size (click)="onFile(wrappingModal)">
-        File
+      <material-button *ngIf='currentImage!=null' autoFocus clear-size (click)="onFile(wrappingModal)" class='inputimage-dialog-okbutton'>
+        {{param.ok}}
       </material-button>
     </div>
   </material-dialog>
@@ -83,10 +97,13 @@ class InputImageDialog implements OnInit {
 class InputImageDialogParam {
   final String title;
   final String message;
+  String ok;
+  String cancel;
   int get imgWidth => 300;
   int get imgHeight => -1;
 
-  InputImageDialogParam({this.title:"File",this.message:"select file!!"}){
+
+  InputImageDialogParam({this.title:"File",this.message:"select file!!",this.ok:"OK",this.cancel:"Cancel"}){
   }
 
   /**
