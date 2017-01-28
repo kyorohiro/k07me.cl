@@ -8,11 +8,6 @@ import 'package:k07me.netbox/netbox.dart';
 import 'package:k07me.prop/prop.dart';
 import 'dart:html' as html;
 
-//
-//import 'package:cl/hello_dialog/hello_dialog.dart';
-//
-import 'logout_dialog.dart';
-//import 'user_icon_dialog.dart';
 import 'inputimgage/dialog.dart';
 import 'updateuser/dialog.dart';
 
