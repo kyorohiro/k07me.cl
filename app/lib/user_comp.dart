@@ -88,7 +88,6 @@ class UserComponent implements OnInit {
   _init() async {
     try {
       iconUrl = await meNBox.createBlobUrlFromKey(userInfo.iconUrl);
-      print("===> ${iconUrl}");
       updateContent(userInfo.content);
     } catch(e){
       print("--e--");
@@ -96,7 +95,7 @@ class UserComponent implements OnInit {
   }
 
   updateContent(String cont) {
-    print("===> ${iconUrl}");
+    _mainElement.children.clear();
     _mainElement.children.add(//
         new html.Element.html("""<div> ${cont.replaceAll("\n","<br>")}</div>""",//
             treeSanitizer: html.NodeTreeSanitizer.trusted));
