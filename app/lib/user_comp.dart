@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:convert' as conv;
 import 'package:k07me.netbox/netbox.dart';
 import 'package:k07me.prop/prop.dart';
+import 'dart:html' as html;
 
 //
 //import 'package:cl/hello_dialog/hello_dialog.dart';
@@ -27,6 +28,7 @@ import 'updateuser/dialog.dart';
     <div style='font-size:24px;'>{{displayName}}</div>
     <div style='fomt-size:8px;'>({{userName}})</div>
 
+    <div #userinfocont></div>
     <p>cont:{{content}}</p>
 
     <div *ngIf='isMe'>
@@ -59,6 +61,12 @@ class UserComponent implements OnInit {
   String content = "";
   bool get isMe => (rootConfig.cookie.userName==userName);
 
+  html.Element _mainElement;
+  @ViewChild('userinfocont')
+  set main(ElementRef elementRef) {
+    print("----AA ${elementRef.nativeElement}");
+    _mainElement = elementRef.nativeElement;
+  }
   //
   InputImageDialogParam param = new InputImageDialogParam();
   UpdateUserDialogParam parama = new UpdateUserDialogParam();
@@ -81,7 +89,11 @@ class UserComponent implements OnInit {
       displayName = infoProp.displayName;
       iconUrl = await userNBox.createBlobUrlFromKey(infoProp.iconUrl);
       print("===> ${iconUrl}");
-      content = infoProp.content;
+      _mainElement.children.add(//
+          new html.Element.html("""<div> ${infoProp.content.replaceAll("\n","<br>")}</div>""",//
+              treeSanitizer: html.NodeTreeSanitizer.trusted));
+     // _mainElement.chidren.add(new html.Element.html("<div>xx</div>"));
+      content = infoProp.content.replaceAll("\n","<br>");
     } catch(e){
 
     }
@@ -105,6 +117,15 @@ class UserComponent implements OnInit {
     parama.onUpdateFunc = (UpdateUserDialog dd) async {
       MeNBox meNBox = config.AppConfig.inst.appNBox.meNBox;
       UserNBox userNBox = config.AppConfig.inst.appNBox.userNBox;
+      userInfo = await meNBox.updateUserInfo(
+          config.AppConfig.inst.cookie.accessToken, //
+          config.AppConfig.inst.cookie.userName,
+          displayName: dd.displayName,
+          cont: dd.content
+      );
+      print("${dd.displayName} ${dd.content}");
+      displayName = dd.displayName;
+      content = dd.content;
     };
     d.open();
   }

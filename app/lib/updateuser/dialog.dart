@@ -29,7 +29,7 @@ import 'package:k07me.prop/prop.dart';
     <h3 class='updateuser-dialog-title' header>{{param.title}}</h3>
     <p class='updateuser-dialog-message'>{{param.message}}</p>
     <material-spinner *ngIf='isloading'></material-spinner>
-    displayName: <br>　<input [(ngModel)]='param.displayName'>{{param.userInfo.displayName}}<br>
+    displayName: <br>　<input [(ngModel)]='param.displayName'><br>
     content: <br>　<textarea [(ngModel)]='param.content' style='width:90%;height:50px;'></textarea><br>
     <div footer>
       <material-button autoFocus clear-size (click)="onCancel(wrappingModal)" class='updateuser-dialog-cancelbutton'>
@@ -98,6 +98,7 @@ class UpdateUserDialogParam {
   //
   String displayName;
   String content;
+
   //
   OnUpdateFunc onUpdateFunc;
   UserInfoProp _userInfo = new UserInfoProp(new MiniProp());
