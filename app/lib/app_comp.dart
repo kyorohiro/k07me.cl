@@ -12,11 +12,11 @@ import 'dart:async';
 import 'login_dialog.dart';
 import 'logout_dialog.dart';
 import 'home_comp.dart';
-import 'user_comp.dart';
+import 'user_page.dart';
 
 @Component(
   selector: "my-app",
-  directives: const [LoginDialog, UserComponent, LogoutDialog,ROUTER_DIRECTIVES],
+  directives: const [LoginDialog, UserPage, LogoutDialog,ROUTER_DIRECTIVES],
   providers: const [ROUTER_PROVIDERS],
   template: """
   <header>
@@ -113,7 +113,7 @@ import 'user_comp.dart';
   const Route(
       path: "/user",
       name: "User",
-      component: UserComponent,
+      component: UserPage,
       useAsDefault: false),
 ]
 )

@@ -2,9 +2,7 @@ import 'package:angular2/core.dart';
 import 'package:angular2/router.dart';
 import 'package:k07me.netbox/netbox.dart';
 import 'config.dart' as config;
-import 'dart:async';
 import 'dart:convert' as conv;
-import 'package:k07me.netbox/netbox.dart';
 import 'package:k07me.prop/prop.dart';
 import 'dart:html' as html;
 
@@ -13,20 +11,20 @@ import 'updateuser/dialog.dart';
 
 //
 @Component(
-    selector: "my-user",
+    selector: "user-component",
     directives: const[InputImageDialog,UpdateUserDialog],
     template: """
     <div class="mybody">
     <img *ngIf='iconUrl==""' src='/assets/egg.png'>
     <img *ngIf='iconUrl!=""' src='{{iconUrl}}'>
 
-    <div style='font-size:24px;'>{{displayName}}</div>
-    <div style='fomt-size:8px;'>({{userName}})</div>
+    <div style='font-size:24px;'>{{userInfo.displayName}}</div>
+    <div style='fomt-size:8px;'>({{userInfo.userName}})</div>
 
     <div #userinfocont></div>
-    <p>cont:{{content}}</p>
+    <p>cont:{{userInfo.content}}</p>
 
-    <div *ngIf='isMe'>
+    <div *ngIf='isUpdatable'>
       <button (click)='onUpdateIcon(myDialoga)'> updateIcon</button>
       <button (click)='onUpdateInfo(myDialogb)'> updateInfo</button>
     </div>
@@ -49,19 +47,20 @@ import 'updateuser/dialog.dart';
 class UserComponent implements OnInit {
   String twitterLoginUrl = "";
   final RouteParams _routeParams;
-  UserInfoProp userInfo = new UserInfoProp(new MiniProp());
-  String userName = "";
-  String displayName = "";
   String iconUrl = "";
-  String content = "";
-  bool get isMe => (rootConfig.cookie.userName==userName);
+
+  @Input()
+  bool isUpdatable;
+
+  @Input()
+  UserInfoProp userInfo;
 
   html.Element _mainElement;
   @ViewChild('userinfocont')
   set main(ElementRef elementRef) {
-    print("----AA ${elementRef.nativeElement}");
     _mainElement = elementRef.nativeElement;
   }
+
   //
   InputImageDialogParam param = new InputImageDialogParam();
   UpdateUserDialogParam parama = new UpdateUserDialogParam();
@@ -72,35 +71,39 @@ class UserComponent implements OnInit {
 
   ngOnInit() {
     twitterLoginUrl = config.AppConfig.inst.twitterLoginUrl;
+    if (userInfo == null){
+      userInfo = new UserInfoProp(new MiniProp());
+    }
+    if (isUpdatable == null) {
+      isUpdatable = false;
+    }
     _init();
   }
 
   _init() async {
+
     UserNBox userNBox = config.AppConfig.inst.appNBox.userNBox;
-    userName = _routeParams.get("name");
     try {
-      UserInfoProp infoProp = await userNBox.getUserInfo(userName);
-      userInfo = infoProp;
-      displayName = infoProp.displayName;
-      iconUrl = await userNBox.createBlobUrlFromKey(infoProp.iconUrl);
+      iconUrl = await userNBox.createBlobUrlFromKey(userInfo.iconUrl);
       print("===> ${iconUrl}");
       _mainElement.children.add(//
-          new html.Element.html("""<div> ${infoProp.content.replaceAll("\n","<br>")}</div>""",//
+          new html.Element.html("""<div> ${userInfo.content.replaceAll("\n","<br>")}</div>""",//
               treeSanitizer: html.NodeTreeSanitizer.trusted));
-     // _mainElement.chidren.add(new html.Element.html("<div>xx</div>"));
-      content = infoProp.content.replaceAll("\n","<br>");
     } catch(e){
-
+      print("--e--");
     }
   }
 
   onUpdateIcon(InputImageDialog d) {
     param = new InputImageDialogParam();
     param.onFileFunc = (InputImageDialog dd) async {
+      if(userInfo == null) {
+        return;
+      }
       MeNBox meNBox = config.AppConfig.inst.appNBox.meNBox;
       UserNBox userNBox = config.AppConfig.inst.appNBox.userNBox;
       var i = conv.BASE64.decode(dd.currentImage.src.replaceFirst(new RegExp(".*,"), ''));
-      UploadFileProp prop = await meNBox.updateFile(rootConfig.cookie.accessToken,"/","icon.png", i,userName: userName);
+      UploadFileProp prop = await meNBox.updateFile(rootConfig.cookie.accessToken,"/","icon.png", i,userName: userInfo.userName);
       iconUrl = await userNBox.createBlobUrlFromKey(prop.blobKey);
     };
     d.open();
@@ -119,8 +122,6 @@ class UserComponent implements OnInit {
           cont: dd.content
       );
       print("${dd.displayName} ${dd.content}");
-      displayName = dd.displayName;
-      content = dd.content;
     };
     d.open();
   }
