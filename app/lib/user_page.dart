@@ -18,7 +18,7 @@ import 'user_comp.dart';
     directives: const[InputImageDialog,UpdateUserDialog,UserComponent],
     template: """
     <div class="mybody">
-    <user-component [userInfo]='userInfo'></user-component>
+    <user-component  [userInfo]='userInfo' [accessToken]='rootConfig.cookie.accessToken' [userName]='rootConfig.cookie.userName' [meNBox]='rootConfig.appNBox.meNBox' [isUpdatable]='isUpdatable'></user-component>
     </div>
   """,
     styles: const[
@@ -39,8 +39,8 @@ class UserPage implements OnInit {
   UpdateUserDialogParam parama = new UpdateUserDialogParam();
 
   UserPage(this._routeParams);
-
   config.AppConfig rootConfig = config.AppConfig.inst;
+  bool get isUpdatable => rootConfig.cookie.userName == userInfo.userName;
 
   ngOnInit() {
     twitterLoginUrl = config.AppConfig.inst.twitterLoginUrl;

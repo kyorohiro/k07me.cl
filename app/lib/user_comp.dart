@@ -54,9 +54,6 @@ class UserComponent implements OnInit {
   UserInfoProp userInfo;
 
   @Input()
-  UserNBox userNBox;
-
-  @Input()
   MeNBox meNBox;
 
   @Input()
@@ -90,7 +87,7 @@ class UserComponent implements OnInit {
 
   _init() async {
     try {
-      iconUrl = await userNBox.createBlobUrlFromKey(userInfo.iconUrl);
+      iconUrl = await meNBox.createBlobUrlFromKey(userInfo.iconUrl);
       print("===> ${iconUrl}");
       updateContent(userInfo.content);
     } catch(e){
@@ -113,7 +110,7 @@ class UserComponent implements OnInit {
       }
       var i = conv.BASE64.decode(dd.currentImage.src.replaceFirst(new RegExp(".*,"), ''));
       UploadFileProp prop = await meNBox.updateFile(accessToken,"/","icon.png", i,userName: userName);
-      iconUrl = await userNBox.createBlobUrlFromKey(prop.blobKey);
+      iconUrl = await meNBox.createBlobUrlFromKey(prop.blobKey);
     };
     d.open();
   }
