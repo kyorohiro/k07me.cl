@@ -1,7 +1,6 @@
 import 'package:angular2/core.dart';
 import 'package:angular2/router.dart';
 import 'package:k07me.netbox/netbox.dart';
-import 'config.dart' as config;
 import 'dart:convert' as conv;
 import 'package:k07me.prop/prop.dart';
 import 'dart:html' as html;
@@ -45,7 +44,6 @@ import 'updateuser/dialog.dart';
     ]
 )
 class UserComponent implements OnInit {
-  String twitterLoginUrl = "";
   final RouteParams _routeParams;
   String iconUrl = "";
 
@@ -54,6 +52,18 @@ class UserComponent implements OnInit {
 
   @Input()
   UserInfoProp userInfo;
+
+  @Input()
+  UserNBox userNBox;
+
+  @Input()
+  MeNBox meNBox;
+
+  @Input()
+  String accessToken;
+
+  @Input()
+  String userName;
 
   html.Element _mainElement;
   @ViewChild('userinfocont')
@@ -67,10 +77,8 @@ class UserComponent implements OnInit {
 
   UserComponent(this._routeParams);
 
-  config.AppConfig rootConfig = config.AppConfig.inst;
 
   ngOnInit() {
-    twitterLoginUrl = config.AppConfig.inst.twitterLoginUrl;
     if (userInfo == null){
       userInfo = new UserInfoProp(new MiniProp());
     }
@@ -81,17 +89,20 @@ class UserComponent implements OnInit {
   }
 
   _init() async {
-
-    UserNBox userNBox = config.AppConfig.inst.appNBox.userNBox;
     try {
       iconUrl = await userNBox.createBlobUrlFromKey(userInfo.iconUrl);
       print("===> ${iconUrl}");
-      _mainElement.children.add(//
-          new html.Element.html("""<div> ${userInfo.content.replaceAll("\n","<br>")}</div>""",//
-              treeSanitizer: html.NodeTreeSanitizer.trusted));
+      updateContent(userInfo.content);
     } catch(e){
       print("--e--");
     }
+  }
+
+  updateContent(String cont) {
+    print("===> ${iconUrl}");
+    _mainElement.children.add(//
+        new html.Element.html("""<div> ${cont.replaceAll("\n","<br>")}</div>""",//
+            treeSanitizer: html.NodeTreeSanitizer.trusted));
   }
 
   onUpdateIcon(InputImageDialog d) {
@@ -100,10 +111,8 @@ class UserComponent implements OnInit {
       if(userInfo == null) {
         return;
       }
-      MeNBox meNBox = config.AppConfig.inst.appNBox.meNBox;
-      UserNBox userNBox = config.AppConfig.inst.appNBox.userNBox;
       var i = conv.BASE64.decode(dd.currentImage.src.replaceFirst(new RegExp(".*,"), ''));
-      UploadFileProp prop = await meNBox.updateFile(rootConfig.cookie.accessToken,"/","icon.png", i,userName: userInfo.userName);
+      UploadFileProp prop = await meNBox.updateFile(accessToken,"/","icon.png", i,userName: userName);
       iconUrl = await userNBox.createBlobUrlFromKey(prop.blobKey);
     };
     d.open();
@@ -113,15 +122,13 @@ class UserComponent implements OnInit {
     parama = new UpdateUserDialogParam();
     parama.userInfo = userInfo;
     parama.onUpdateFunc = (UpdateUserDialog dd) async {
-      MeNBox meNBox = config.AppConfig.inst.appNBox.meNBox;
-      UserNBox userNBox = config.AppConfig.inst.appNBox.userNBox;
       userInfo = await meNBox.updateUserInfo(
-          config.AppConfig.inst.cookie.accessToken, //
-          config.AppConfig.inst.cookie.userName,
+          accessToken, //
+          userName,
           displayName: dd.displayName,
           cont: dd.content
       );
-      print("${dd.displayName} ${dd.content}");
+      updateContent(dd.content);
     };
     d.open();
   }
