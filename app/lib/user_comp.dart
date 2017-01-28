@@ -4,6 +4,8 @@ import 'package:k07me.netbox/netbox.dart';
 import 'config.dart' as config;
 import 'dart:async';
 import 'dart:convert' as conv;
+import 'package:k07me.netbox/netbox.dart';
+import 'package:k07me.prop/prop.dart';
 
 //
 //import 'package:cl/hello_dialog/hello_dialog.dart';
@@ -29,7 +31,7 @@ import 'updateuser/dialog.dart';
 
     <div *ngIf='isMe'>
       <button (click)='onUpdateIcon(myDialoga)'> updateIcon</button>
-      <button (click)='onUpdateInfo(myDialogb)'> updateIcon</button>
+      <button (click)='onUpdateInfo(myDialogb)'> updateInfo</button>
     </div>
 
     <inputimage-dialog [param]="param" #myDialoga>
@@ -50,6 +52,7 @@ import 'updateuser/dialog.dart';
 class UserComponent implements OnInit {
   String twitterLoginUrl = "";
   final RouteParams _routeParams;
+  UserInfoProp userInfo = new UserInfoProp(new MiniProp());
   String userName = "";
   String displayName = "";
   String iconUrl = "";
@@ -74,6 +77,7 @@ class UserComponent implements OnInit {
     userName = _routeParams.get("name");
     try {
       UserInfoProp infoProp = await userNBox.getUserInfo(userName);
+      userInfo = infoProp;
       displayName = infoProp.displayName;
       iconUrl = await userNBox.createBlobUrlFromKey(infoProp.iconUrl);
       print("===> ${iconUrl}");
@@ -96,6 +100,12 @@ class UserComponent implements OnInit {
   }
 
   onUpdateInfo(UpdateUserDialog d) {
+    parama = new UpdateUserDialogParam();
+    parama.userInfo = userInfo;
+    parama.onUpdateFunc = (UpdateUserDialog dd) async {
+      MeNBox meNBox = config.AppConfig.inst.appNBox.meNBox;
+      UserNBox userNBox = config.AppConfig.inst.appNBox.userNBox;
+    };
     d.open();
   }
 }

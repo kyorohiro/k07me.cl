@@ -2,6 +2,8 @@ import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'dart:html' as html;
 import 'dart:async';
+import 'package:k07me.netbox/netbox.dart';
+import 'package:k07me.prop/prop.dart';
 
 
 @Component(
@@ -27,14 +29,13 @@ import 'dart:async';
     <h3 class='updateuser-dialog-title' header>{{param.title}}</h3>
     <p class='updateuser-dialog-message'>{{param.message}}</p>
     <material-spinner *ngIf='isloading'></material-spinner>
-    <div #imgc></div>
+    displayName: <br>　<input [(ngModel)]='param.displayName'>{{param.userInfo.displayName}}<br>
+    content: <br>　<textarea [(ngModel)]='param.content' style='width:90%;height:50px;'></textarea><br>
     <div footer>
-
-
       <material-button autoFocus clear-size (click)="onCancel(wrappingModal)" class='updateuser-dialog-cancelbutton'>
         {{param.cancel}}
       </material-button>
-      <material-button *ngIf='currentImage!=null' autoFocus clear-size (click)="onUpdate(wrappingModal)" class='updateuser-dialog-okbutton'>
+      <material-button autoFocus clear-size (click)="onUpdate(wrappingModal)" class='updateuser-dialog-okbutton'>
         {{param.ok}}
       </material-button>
     </div>
@@ -52,8 +53,10 @@ class UpdateUserDialog implements OnInit {
   UpdateUserDialogParam param;
 
   bool isloading = false;
-  html.ImageElement currentImage = null;
   String errorMessage = "";
+
+  String get displayName => param.displayName;
+  String get content => param.content;
 
   ngOnInit(){
   }
@@ -92,20 +95,31 @@ class UpdateUserDialogParam {
   String message;
   String ok;
   String cancel;
-  OnUpdateFunc onFileFunc;
+  //
+  String displayName;
+  String content;
+  //
+  OnUpdateFunc onUpdateFunc;
+  UserInfoProp _userInfo = new UserInfoProp(new MiniProp());
+  UserInfoProp get userInfo => _userInfo;
+  void set userInfo(UserInfoProp v){
+    _userInfo = v;
+    displayName = _userInfo.displayName;
+    content = _userInfo.content;
+  }
 
   UpdateUserDialogParam({this.title:"UserInfo",this.message:"..",this.ok:"Update",this.cancel:"Cancel",
-  onFileFunc: null}){
+  onUpdateFunc: null}){
   }
 
   /**
    * if failed to do onFind func, then return error message.
    */
   Future<String> onUpdate(UpdateUserDialog d) async {
-    if (onFileFunc == null) {
+    if (onUpdateFunc == null) {
       return "";
     } else {
-      return onFileFunc(d);
+      return onUpdateFunc(d);
     }
   }
 }
