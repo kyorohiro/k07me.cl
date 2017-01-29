@@ -2,15 +2,15 @@ import 'package:angular2/core.dart';
 import 'user_comp.dart';
 import 'package:k07me.netbox/netbox.dart';
 import 'dart:async';
-
+import 'user_comp.dart';
 
 @Component(
   selector: "user-components",
-  directives: const [UsersComponent],
+  directives: const [UserComponent],
   template: """
-  <ul>
-  <li *ngFor='let ui of userInfos'><span>{{ui.userName}}</span></li>
-  </ul>
+  <div>
+  <div *ngFor='let ui of userInfos'><user-component [userInfo]='ui'></user-component></div>
+  </div>
   """
 )
 class UsersComponent implements OnInit {
@@ -29,7 +29,6 @@ class UsersComponent implements OnInit {
 
 
   ngOnInit() {
-    print("---A-1");
     _init();
     for(UserInfoProp user in userInfos) {
       userNames.add(user.userName);
@@ -38,10 +37,8 @@ class UsersComponent implements OnInit {
 
   _init() async {
     try {
-      print("---A0");
       UserKeyListProp userKeys = await userNBox.findUser(cursor);
       for(String key in userKeys.keys) {
-        print("---A1 ${key}");
         UserInfoProp infoProp = await userNBox.getUserInfoFromKey(key);
          if(!userNames.contains(infoProp.userName)) {
             userInfos.add(infoProp);
@@ -51,4 +48,5 @@ class UsersComponent implements OnInit {
       print("A2 ${e}");
     }
   }
+
 }
