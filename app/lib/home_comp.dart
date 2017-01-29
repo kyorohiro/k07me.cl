@@ -4,13 +4,15 @@
 import 'package:angular2/core.dart';
 import 'package:angular2/router.dart';
 import 'package:cl/config.dart' as config;
-
+import 'users_comp.dart';
 
 @Component(
     selector: "myhome",
+    directives: const [UsersComponent],
     template:  """
     <div class="mybody">
-    <h1>Home</h1>
+    <h1>Users</h1>
+    <user-components [userNBox]='rootConfig.appNBox.userNBox'></user-components>
     </div>
   """,
     styles: const[
@@ -29,6 +31,7 @@ class HomeComponent implements OnInit {
   config.AppConfig rootConfig = config.AppConfig.inst;
 
   ngOnInit() {
+
     twitterLoginUrl =  config.AppConfig.inst.twitterLoginUrl;
     print(_routeParams.params.toString());
     if(_routeParams.params.containsKey("token")) {
