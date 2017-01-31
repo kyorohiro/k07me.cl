@@ -7,6 +7,7 @@ import 'dart:html' as html;
 
 import 'inputimgage/dialog.dart';
 import 'updateuser/dialog.dart';
+import 'dart:async';
 
 //
 @Component(
@@ -14,14 +15,12 @@ import 'updateuser/dialog.dart';
     directives: const[InputImageDialog,UpdateUserDialog],
     template: """
     <div class="mybody">
-    <img *ngIf='iconUrl==""' src='/assets/egg.png'>
-    <img *ngIf='iconUrl!=""' src='{{iconUrl}}'>
-
+    <img #image1 *ngIf='iconUrl==""' src='/assets/egg.png'>
+    <img #image *ngIf='iconUrl!=""' src='{{iconUrl}}'>
     <div style='font-size:24px;'>{{userInfo.displayName}}</div>
-    <div style='fomt-size:8px;'>({{userInfo.userName}})</div>
+    <div style='font-size:8px;'>({{userInfo.userName}})</div>
 
     <div #userinfocont></div>
-    <p>cont:{{userInfo.content}}</p>
 
     <div *ngIf='isUpdatable'>
       <button (click)='onUpdateIcon(myDialoga)'> updateIcon</button>
@@ -48,13 +47,40 @@ class UserComponent implements OnInit {
   String iconUrl = "";
 
   @Input()
+  int imageWidth = 200;
+
+  @Input()
+  int contentWidth = 200;
+
+  @ViewChild('image')
+  set image(ElementRef elementRef) {
+    if(elementRef == null || elementRef.nativeElement == null) {
+      return;
+    }
+    (elementRef.nativeElement as html.ImageElement).style.width = "${imageWidth}px";
+  }
+
+
+  @Input()
   bool isUpdatable;
 
+  UserInfoProp _userInfo = null;
   @Input()
-  UserInfoProp userInfo;
+   void set userInfo(UserInfoProp v) {
+    _userInfo = v;
+    updateInfo();
+  }
 
+  UserInfoProp get userInfo => _userInfo;
+
+  MeNBox _meNBox;
   @Input()
-  MeNBox meNBox;
+  void set meNBox(MeNBox v) {
+    _meNBox = v;
+    updateInfo();
+  }
+
+  MeNBox get meNBox => _meNBox;
 
   @Input()
   String accessToken;
@@ -63,34 +89,39 @@ class UserComponent implements OnInit {
   String userName;
 
   html.Element _mainElement;
+
   @ViewChild('userinfocont')
   set main(ElementRef elementRef) {
     _mainElement = elementRef.nativeElement;
+    _mainElement.style.width ="${contentWidth}px";
   }
 
   //
   InputImageDialogParam param = new InputImageDialogParam();
   UpdateUserDialogParam parama = new UpdateUserDialogParam();
 
-  UserComponent(this._routeParams);
+  UserComponent(this._routeParams){
+ }
 
 
   ngOnInit() {
     if (userInfo == null){
       userInfo = new UserInfoProp(new MiniProp());
+      updateInfo();
     }
     if (isUpdatable == null) {
       isUpdatable = false;
     }
-    _init();
   }
 
-  _init() async {
-    try {
-      iconUrl = await meNBox.createBlobUrlFromKey(userInfo.iconUrl);
-      updateContent(userInfo.content);
-    } catch(e){
-      print("--e--");
+  updateInfo()async {
+    if(meNBox != null && userInfo != null) {
+      try {
+        iconUrl = await meNBox.createBlobUrlFromKey(userInfo.iconUrl);
+        updateContent(userInfo.content);
+      } catch(e) {
+        print("--e-- ${e}");
+      }
     }
   }
 
@@ -124,7 +155,6 @@ class UserComponent implements OnInit {
           displayName: dd.displayName,
           cont: dd.content
       );
-      updateContent(dd.content);
     };
     d.open();
   }

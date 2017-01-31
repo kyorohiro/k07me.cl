@@ -29,15 +29,15 @@ class ImageUtil {
   }
 
   static Future<html.ImageElement> resizeImage(html.ImageElement imageTmp,
-      {int nextHeight: 300,int nextWidth: 300,}) async {
+      {int nextHeight: -1,int nextWidth: 300,}) async {
     html.CanvasElement canvasElm = new html.CanvasElement();
     html.CanvasRenderingContext2D context = canvasElm.context2D;
-    if(nextHeight > 0) {
+    if(nextWidth > 0) {
+      canvasElm.width = nextWidth;
+      canvasElm.height = ((nextWidth * imageTmp.height) ~/ imageTmp.width);
+    } else if(nextHeight > 0) {
       canvasElm.width = ((nextHeight * imageTmp.width) ~/ imageTmp.height);
       canvasElm.height = nextHeight;
-    } else if(nextWidth > 0) {
-      canvasElm.width = nextWidth;
-      canvasElm.height = ((nextWidth * imageTmp.height) ~/ imageTmp.width);;
     } else {
       canvasElm.width = 300;
       canvasElm.height = 300;
