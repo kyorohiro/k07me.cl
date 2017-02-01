@@ -15,7 +15,7 @@ import 'comp_article.dart';
     <div class="mybody">
     <h1>Articles</h1>
     <div *ngFor='let artInfo of artInfos'>
-        <art-component [userNBox]='rootConfig.appNBox.userNBox' [artInfo]='artInfo'></art-component>
+        <art-component [artNBox]='rootConfig.appNBox.artNBox' [artInfo]='artInfo'></art-component>
     </div>
     </div>
   """,

@@ -103,7 +103,11 @@ class ArticleComponent implements OnInit {
   updateInfo()async {
     if(artNBox != null && artInfo != null) {
       try {
-//        iconUrl = await artNBox.createBlobUrlFromKey(artInfo.iconUrl);
+        if(artInfo.iconUrl == null || artInfo.iconUrl == ""){
+          iconUrl = "";
+        } else {
+          iconUrl = await artNBox.createBlobUrlFromKey(artInfo.iconUrl);
+        }
       } catch(e) {
         print("--e-- ${e}");
       }
