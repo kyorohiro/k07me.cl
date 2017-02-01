@@ -11,7 +11,7 @@ import 'package:cl/comp_me.dart';
 import 'dart:async';
 import 'package:cl/login_dialog.dart';
 import 'package:cl/logout_dialog.dart';
-import 'package:cl/app_comp.dart';
+import 'package:cl/comp_app.dart';
 
 
 main() {
