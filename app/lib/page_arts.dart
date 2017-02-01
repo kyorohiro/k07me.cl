@@ -5,14 +5,18 @@ import 'package:angular2/core.dart';
 import 'package:angular2/router.dart';
 import 'package:cl/config.dart' as config;
 import 'comp_users.dart';
+import 'package:k07me.netbox/netbox.dart';
+import 'comp_article.dart';
 
 @Component(
     selector: "my-arts",
-    directives: const [UsersComponent],
+    directives: const [ArticleComponent],
     template:  """
     <div class="mybody">
-    <h1>Users</h1>
-    <user-components [userNBox]='rootConfig.appNBox.userNBox'></user-components>
+    <h1>Articles</h1>
+    <div *ngFor='let artInfo of artInfos'>
+        <art-component [userNBox]='rootConfig.appNBox.userNBox' [artInfo]='artInfo'></art-component>
+    </div>
     </div>
   """,
     styles: const[
@@ -25,14 +29,27 @@ import 'comp_users.dart';
     ]
 )
 class ArtsPage implements OnInit {
-  String twitterLoginUrl = "";
   final RouteParams _routeParams;
   ArtsPage(this._routeParams);
   config.AppConfig rootConfig = config.AppConfig.inst;
 
-  ngOnInit() {
+  List<ArtInfoProp> artInfos = [];
 
-    twitterLoginUrl =  config.AppConfig.inst.twitterLoginUrl;
+  ngOnInit() {
+    updateConfig();
+    update();
+  }
+
+  update() async {
+    ArtNBox artnBox = rootConfig.appNBox.artNBox;
+    ArtKeyListProp list = await artnBox.findArticle("");
+    for(String key in list.keys) {
+      ArtInfoProp artInfo = await artnBox.getArtFromStringId(key);
+      artInfos.add(artInfo);
+    }
+  }
+
+  updateConfig(){
     print(_routeParams.params.toString());
     if(_routeParams.params.containsKey("token")) {
       config.AppConfig.inst.cookie.accessToken = Uri.decodeFull(_routeParams.params["token"]);

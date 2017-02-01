@@ -15,8 +15,6 @@ import 'dart:async';
     <div>
     <h2>{{artInfo.title}}</h2>
     <img #image *ngIf='iconUrl!=""' src='{{iconUrl}}'>
-    <div style='font-size:24px;'>{{userInfo.displayName}}</div>
-    <div style='font-size:8px;'>({{userInfo.userName}})</div>
 
     <div #userinfocont></div>
 
@@ -95,25 +93,27 @@ class ArticleComponent implements OnInit {
   ngOnInit() {
     if (artInfo == null){
       artInfo = new ArtInfoProp(new MiniProp());
-      updateInfo();
     }
     if (isUpdatable == null) {
       isUpdatable = false;
     }
+    updateInfo();
   }
 
   updateInfo()async {
     if(artNBox != null && artInfo != null) {
       try {
 //        iconUrl = await artNBox.createBlobUrlFromKey(artInfo.iconUrl);
-        updateContent(artInfo.cont);
       } catch(e) {
         print("--e-- ${e}");
       }
     }
+    updateContent(artInfo.cont);
+
   }
 
   updateContent(String cont) {
+    print("--->${cont}");
     _mainElement.children.clear();
     _mainElement.children.add(//
         new html.Element.html("""<div> ${cont.replaceAll("\n","<br>")}</div>""",//
