@@ -49,7 +49,13 @@ import 'dart:convert' as conv;
 class PostArticleComponent implements OnInit {
   final RouteParams _routeParams;
 
-  String id = "";
+  String _id = "";
+  @Input()
+  void set id(String v){
+    _id = v;
+
+  }
+  String get id => _id;
   String title = "";
   String message = "";
 
@@ -62,14 +68,22 @@ class PostArticleComponent implements OnInit {
   InputImageDialogParam param = new InputImageDialogParam();
 
   PostArticleComponent(this._routeParams){
-    id = _routeParams.get("id");
+   // id = _routeParams.get("id");
   }
 
   config.AppConfig rootConfig = config.AppConfig.inst;
 
   List<String> imageSrcs = [];
 
-  ngOnInit() {
+  ngOnInit(){
+    updateA();
+  }
+  updateA() async {
+    if(id != null && id !="new" && id!="") {
+      var v = await artNBox.getArtFromArticleId(id,"");
+      title = v.title;
+      message = v.cont;
+    }
   }
 
   onPost(html.Element v) async {

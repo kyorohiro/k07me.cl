@@ -19,7 +19,7 @@ import 'dart:async';
     <div #userinfocont></div>
 
     <div *ngIf='isUpdatable'>
-      <button>Edit</button>
+      <button (click)='onEdit()'>Edit</button>
     </div>
 
     </div>
@@ -31,6 +31,7 @@ import 'dart:async';
 )
 class ArticleComponent implements OnInit {
   final RouteParams _routeParams;
+  final Router _router;
   String iconUrl = "";
 
 
@@ -85,7 +86,7 @@ class ArticleComponent implements OnInit {
     _mainElement.style.width ="${contentWidth}px";
   }
 
-  ArticleComponent(this._routeParams){
+  ArticleComponent(this._router, this._routeParams){
 ///    artInfo.title
   }
 
@@ -124,4 +125,7 @@ class ArticleComponent implements OnInit {
             treeSanitizer: html.NodeTreeSanitizer.trusted));
   }
 
+  onEdit(){
+    _router.navigate(["Post",{"id":artInfo.articleId}]);
+  }
 }

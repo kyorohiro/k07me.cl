@@ -11,7 +11,7 @@ import 'comp_post_art.dart';
     directives: const [PostArticleComponent],
     template:  """
     <div class="mybody">
-    <post-article-component [artNBox]='rootConfig.appNBox.artNBox' [accessToken]='rootConfig.cookie.accessToken'></post-article-component>
+    <post-article-component [artNBox]='rootConfig.appNBox.artNBox' [accessToken]='rootConfig.cookie.accessToken' [id]='id'></post-article-component>
     </div>
   """,
     styles: const[
@@ -25,9 +25,13 @@ import 'comp_post_art.dart';
 )
 class PostArticlePage implements OnInit {
   final RouteParams _routeParams;
-  PostArticlePage(this._routeParams);
+  String id = "";
+  PostArticlePage(this._routeParams){
+    id = _routeParams.get("id");
+  }
   config.AppConfig rootConfig = config.AppConfig.inst;
 
   ngOnInit() {
+
   }
 }

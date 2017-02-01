@@ -15,7 +15,7 @@ import 'comp_article.dart';
     <div class="mybody">
     <h1>Articles</h1>
     <div *ngFor='let artInfo of artInfos'>
-        <art-component [artNBox]='rootConfig.appNBox.artNBox' [artInfo]='artInfo'></art-component>
+        <art-component [artNBox]='rootConfig.appNBox.artNBox' [artInfo]='artInfo' [isUpdatable]='rootConfig.cookie.userName==artInfo.userName'></art-component>
     </div>
     </div>
   """,
