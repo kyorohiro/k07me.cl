@@ -11,12 +11,13 @@ import 'package:cl/me_comp.dart';
 import 'dart:async';
 import 'login_dialog.dart';
 import 'logout_dialog.dart';
-import 'home_comp.dart';
-import 'user_page.dart';
+import 'page_home.dart';
+import 'page_user.dart';
+import 'page_users.dart';
 
 @Component(
   selector: "my-app",
-  directives: const [LoginDialog, UserPage, LogoutDialog,ROUTER_DIRECTIVES],
+  directives: const [LoginDialog, UserPage, UsersPage, LogoutDialog,ROUTER_DIRECTIVES],
   providers: const [ROUTER_PROVIDERS],
   template: """
   <header>
@@ -25,7 +26,9 @@ import 'user_page.dart';
   <div *ngIf='useHome==true'>
   <a class='myli' [routerLink]="['Home']">Home</a>
   </div>
-
+  <div *ngIf='useUsers==true'>
+  <a class='myli' [routerLink]="['Users']">Users</a>
+  </div>
   <div *ngIf='rootConfig.cookie.accessToken == ""'>
   <a class='myli' [routerLink]="['Me']">Me</a>
   </div>
@@ -105,6 +108,11 @@ import 'user_page.dart';
       component: HomeComponent,
       useAsDefault: true),
   const Route(
+      path: "/users",
+      name: "Users",
+      component: UsersPage,
+      useAsDefault: false),
+  const Route(
       path: "/me",
       name: "Me",
       component: MeComponent,
@@ -116,10 +124,11 @@ import 'user_page.dart';
       component: UserPage,
       useAsDefault: false),
 ]
-)
+)//    <user-components [userNBox]='rootConfig.appNBox.userNBox'></user-components>
 class AppComponent {
   bool useHome = true;
   bool useMe = true;
+  bool useUsers = true;
   config.AppConfig rootConfig = config.AppConfig.inst;
   onLogin(LoginDialog d) {
     d.open();
