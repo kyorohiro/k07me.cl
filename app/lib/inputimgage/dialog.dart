@@ -50,7 +50,7 @@ class InputImageDialog implements OnInit {
   ModalComponent wrappingModal;
 
   @Input()
-  InputImageDialogParam param;
+  InputImageDialogParam param = new InputImageDialogParam();
 
   bool isloading = false;
   html.ImageElement currentImage = null;

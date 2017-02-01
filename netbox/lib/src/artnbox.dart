@@ -98,11 +98,11 @@ class ArtNBox {
   ArtNBox(this.builder, this.backAddr, {this.basePath: "/api/v1/art"}) {}
   //
 
-  Future<String> makeBlobUrlFromKey(String key) async {
-    return makeArtBlob(key);
+  Future<String> createBlobUrlFromKey(String key) async {
+    return createBlobUrl(key);
   }
 
-  Future<String> makeArtBlob(String key, {String userName: "", String dir: "", String file: "", String sign: ""}) async {
+  Future<String> createBlobUrl(String key, {String userName: "", String dir: "", String file: "", String sign: ""}) async {
     key = key.replaceAll("key://", "");
     return [
       """${backAddr}${this.basePath}/getblob""", //
