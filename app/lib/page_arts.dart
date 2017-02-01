@@ -5,6 +5,7 @@ import 'package:angular2/core.dart';
 import 'package:angular2/router.dart';
 import 'package:cl/config.dart' as config;
 import 'comp_users.dart';
+import 'comp_post_art.dart';
 
 @Component(
     selector: "my-arts",
