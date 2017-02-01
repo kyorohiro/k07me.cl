@@ -2,6 +2,7 @@ import 'package:angular2/core.dart';
 import 'package:angular2/router.dart';
 import 'config.dart' as config;
 import 'dart:html' as html;
+import 'package:k07me.netbox/netbox.dart';
 
 //
 @Component(
@@ -46,6 +47,7 @@ class PostArticleComponent implements OnInit {
   String title = "";
   String message = "";
 
+  MeNBox meNBox = null;
   PostArticleComponent(this._routeParams){
     id = _routeParams.get("id");
   }

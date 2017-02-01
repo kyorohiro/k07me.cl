@@ -14,11 +14,12 @@ import 'logout_dialog.dart';
 import 'page_arts.dart';
 import 'page_user.dart';
 import 'page_users.dart';
+import 'page_post_art.dart';
 import 'comp_post_art.dart';
 
 @Component(
   selector: "my-app",
-  directives: const [LoginDialog, UserPage, UsersPage, LogoutDialog, PostArticleComponent,ROUTER_DIRECTIVES],
+  directives: const [LoginDialog, UserPage, UsersPage, LogoutDialog, PostArticlePage,ROUTER_DIRECTIVES],
   providers: const [ROUTER_PROVIDERS],
   template: """
   <header>
@@ -127,7 +128,7 @@ import 'comp_post_art.dart';
   const Route(
       path: "/post",
       name: "Post",
-      component: PostArticleComponent,
+      component: PostArticlePage,
       useAsDefault: false),
 ]
 )//    <user-components [userNBox]='rootConfig.appNBox.userNBox'></user-components>
