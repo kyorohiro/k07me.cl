@@ -4,7 +4,7 @@
 import 'package:angular2/core.dart';
 import 'package:angular2/router.dart';
 import 'package:cl/config.dart' as config;
-import 'users_comp.dart';
+import 'comp_users.dart';
 
 @Component(
     selector: "my-users",

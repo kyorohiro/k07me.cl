@@ -7,11 +7,11 @@ import 'package:angular2/router.dart';
 
 //import 'package:cl/app_component.dart';
 import 'package:cl/config.dart' as config;
-import 'package:cl/me_comp.dart';
+import 'package:cl/comp_me.dart';
 import 'dart:async';
 import 'login_dialog.dart';
 import 'logout_dialog.dart';
-import 'page_home.dart';
+import 'page_arts.dart';
 import 'page_user.dart';
 import 'page_users.dart';
 
@@ -105,7 +105,7 @@ import 'page_users.dart';
   const Route(
       path: "/",
       name: "Home",
-      component: HomeComponent,
+      component: ArtsPage,
       useAsDefault: true),
   const Route(
       path: "/users",

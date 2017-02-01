@@ -14,7 +14,7 @@ import 'dart:async';
     selector: "user-component",
     directives: const[InputImageDialog,UpdateUserDialog],
     template: """
-    <div class="mybody">
+    <div>
     <img #image1 *ngIf='iconUrl==""' src='/assets/egg.png'>
     <img #image *ngIf='iconUrl!=""' src='{{iconUrl}}'>
     <div style='font-size:24px;'>{{userInfo.displayName}}</div>
@@ -35,10 +35,6 @@ import 'dart:async';
   """,
     styles: const[
       """
-    .mybody {
-      display: block;
-      height: 600px;
-    }
     """,
     ]
 )

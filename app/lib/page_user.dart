@@ -10,7 +10,7 @@ import 'dart:html' as html;
 
 import 'inputimgage/dialog.dart';
 import 'updateuser/dialog.dart';
-import 'user_comp.dart';
+import 'comp_user.dart';
 
 //
 @Component(
@@ -19,6 +19,8 @@ import 'user_comp.dart';
     template: """
     <div class="mybody">
     <user-component  [userInfo]='userInfo' [accessToken]='rootConfig.cookie.accessToken' [userName]='rootConfig.cookie.userName' [meNBox]='rootConfig.appNBox.meNBox' [isUpdatable]='isUpdatable'></user-component>
+    <br>
+    <div *ngIf='isMe'>xxxZ</div>
     </div>
   """,
     styles: const[
@@ -41,6 +43,7 @@ class UserPage implements OnInit {
   UserPage(this._routeParams);
   config.AppConfig rootConfig = config.AppConfig.inst;
   bool get isUpdatable => rootConfig.cookie.userName == userInfo.userName;
+  bool get isMe => rootConfig.cookie.userName == userInfo.userName;
 
   ngOnInit() {
     twitterLoginUrl = config.AppConfig.inst.twitterLoginUrl;

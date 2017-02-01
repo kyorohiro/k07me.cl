@@ -4,10 +4,10 @@
 import 'package:angular2/core.dart';
 import 'package:angular2/router.dart';
 import 'package:cl/config.dart' as config;
-import 'users_comp.dart';
+import 'comp_users.dart';
 
 @Component(
-    selector: "myhome",
+    selector: "my-arts",
     directives: const [UsersComponent],
     template:  """
     <div class="mybody">
@@ -24,10 +24,10 @@ import 'users_comp.dart';
     """,
     ]
 )
-class HomeComponent implements OnInit {
+class ArtsPage implements OnInit {
   String twitterLoginUrl = "";
   final RouteParams _routeParams;
-  HomeComponent(this._routeParams);
+  ArtsPage(this._routeParams);
   config.AppConfig rootConfig = config.AppConfig.inst;
 
   ngOnInit() {

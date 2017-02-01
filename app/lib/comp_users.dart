@@ -1,8 +1,8 @@
 import 'package:angular2/core.dart';
-import 'user_comp.dart';
+import 'comp_user.dart';
 import 'package:k07me.netbox/netbox.dart';
 import 'dart:async';
-import 'user_comp.dart';
+import 'comp_user.dart';
 import 'config.dart' as config;
 
 @Component(
