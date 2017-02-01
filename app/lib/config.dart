@@ -18,7 +18,9 @@ class AppConfig {
   AppNetBox appNBox;
 
   AppConfig(){
-    appNBox = new AppNetBox(new UserNBox(new Html5NetBuilder(), baseAddr),new MeNBox(new Html5NetBuilder(), baseAddr));
+    appNBox = new AppNetBox(new UserNBox(new Html5NetBuilder(), baseAddr),//
+        new MeNBox(new Html5NetBuilder(), baseAddr),//
+        new ArtNBox(new Html5NetBuilder(), baseAddr));
   }
 
   String get twitterLoginUrl =>
@@ -29,6 +31,7 @@ class AppConfig {
 class AppNetBox {
   UserNBox userNBox;
   MeNBox meNBox;
-  AppNetBox(this.userNBox, this.meNBox){
+  ArtNBox artNBox;
+  AppNetBox(this.userNBox, this.meNBox, this.artNBox){
   }
 }

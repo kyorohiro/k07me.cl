@@ -47,7 +47,14 @@ class PostArticleComponent implements OnInit {
   String title = "";
   String message = "";
 
-  MeNBox meNBox = null;
+  @Input()
+  ArtNBox artNBox = null;
+
+  @Input()
+  String accessToken;
+
+
+
   PostArticleComponent(this._routeParams){
     id = _routeParams.get("id");
   }
@@ -59,7 +66,7 @@ class PostArticleComponent implements OnInit {
   }
 
   onPost(html.Element v){
-    ;
+    artNBox.newArt(accessToken, title: title, cont: message);
   }
 
 }

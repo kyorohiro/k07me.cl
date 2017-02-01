@@ -11,7 +11,7 @@ import 'comp_post_art.dart';
     directives: const [PostArticleComponent],
     template:  """
     <div class="mybody">
-    <post-article-component [meNBox]='rootConfig.appNBox.meNBox'></post-article-component>
+    <post-article-component [artNBox]='rootConfig.appNBox.artNBox' [accessToken]='rootConfig.cookie.accessToken'></post-article-component>
     </div>
   """,
     styles: const[
