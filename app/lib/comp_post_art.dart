@@ -93,7 +93,7 @@ class PostArticleComponent implements OnInit {
   onPost(html.Element v) async {
 
     NewArtProp newArtProp = null;
-    if(id == "") {
+    if(id == "" || id == "new" || id == null) {
       newArtProp = await artNBox.newArt(accessToken, title: title, cont: message);
     } else {
       newArtProp = await artNBox.updateArt(accessToken, id, title: title, cont: message);
@@ -108,8 +108,8 @@ class PostArticleComponent implements OnInit {
   onUpdateIcon(InputImageDialog dd) async {
     param.onFileFunc = (InputImageDialog dd) async {
       var currentImage = dd.currentImage;
-      var i = conv.BASE64.decode(currentImage.src.replaceFirst(new RegExp(".*,"), ''));
-      updateIcon(i);
+//      var i = conv.BASE64.decode(currentImage.src.replaceFirst(new RegExp(".*,"), ''));
+      updateIcon(currentImage.src);
 
      };
     dd.open();
