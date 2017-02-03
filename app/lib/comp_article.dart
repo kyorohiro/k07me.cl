@@ -8,6 +8,8 @@ import 'dart:html' as html;
 import 'dart:async';
 import 'deleteArticle/dialog.dart';
 
+import 'comp_articles.dart';
+
 //
 @Component(
     selector: "art-component",
@@ -19,7 +21,7 @@ import 'deleteArticle/dialog.dart';
 
     <div #userinfocont></div>
 
-    <div *ngIf='isUpdatable'>
+    <div *ngIf='info.isUpdatable(artInfo.userName)'>
       <button (click)='onEdit()'>Edit</button>
       <button (click)='onDelete(myDialoga)'>Delete</button>
     </div>
@@ -37,8 +39,6 @@ class ArticleComponent implements OnInit {
   final Router _router;
   String iconUrl = "";
 
-
-
   @Input()
   int imageWidth = 200;
 
@@ -53,9 +53,9 @@ class ArticleComponent implements OnInit {
     (elementRef.nativeElement as html.ImageElement).style.width = "${imageWidth}px";
   }
 
-
   @Input()
-  bool isUpdatable;
+  ArticlesComponentInfo info = new ArticlesComponentInfo();
+
 
   ArtInfoProp _artInfo = null;
   @Input()
@@ -66,17 +66,6 @@ class ArticleComponent implements OnInit {
 
   ArtInfoProp get artInfo => _artInfo;
 
-  ArtNBox _artNBox;
-  @Input()
-  void set artNBox(ArtNBox v) {
-    _artNBox = v;
-    updateInfo();
-  }
-
-  ArtNBox get artNBox => _artNBox;
-
-  @Input()
-  String accessToken;
 
   @Input()
   String userName;
@@ -90,7 +79,6 @@ class ArticleComponent implements OnInit {
   }
 
   ArticleComponent(this._router, this._routeParams){
-///    artInfo.title
   }
 
 
@@ -98,19 +86,16 @@ class ArticleComponent implements OnInit {
     if (artInfo == null){
       artInfo = new ArtInfoProp(new MiniProp());
     }
-    if (isUpdatable == null) {
-      isUpdatable = false;
-    }
     updateInfo();
   }
 
-  updateInfo()async {
-    if(artNBox != null && artInfo != null) {
+  updateInfo() async {
+    if(info.artNBox != null && artInfo != null) {
       try {
         if(artInfo.iconUrl == null || artInfo.iconUrl == ""){
           iconUrl = "";
         } else {
-          iconUrl = await artNBox.createBlobUrlFromKey(artInfo.iconUrl);
+          iconUrl = await info.artNBox.createBlobUrlFromKey(artInfo.iconUrl);
         }
       } catch(e) {
         print("--e-- ${e}");
@@ -134,7 +119,8 @@ class ArticleComponent implements OnInit {
   DeleteArticleDialogParam param = new DeleteArticleDialogParam();
   onDelete(DeleteArticleDialog d) {
     param.onDeleteFunc = (DeleteArticleDialog dd) async {
-      await artNBox.deleteArticleWithToken(accessToken, _artInfo.articleId);
+      await info.artNBox.deleteArticleWithToken(info.accessToken, _artInfo.articleId);
+      info.onRemove(artInfo);
     };
     param.title = "delete";
     param.message = "delete article";

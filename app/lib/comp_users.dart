@@ -10,7 +10,7 @@ import 'config.dart' as config;
   directives: const [UserComponent],
   template: """
   <div>
-  <div *ngFor='let ui of userInfos'><user-component [userInfo]='ui' [meNBox]='rootConfig.appNBox.meNBox'></user-component></div>
+  <div *ngFor='let ui of userInfos'><user-component  [userInfo]='ui' [meNBox]='rootConfig.appNBox.meNBox'></user-component></div>
   </div>
   """
 )
@@ -18,10 +18,10 @@ class UsersComponent implements OnInit {
 
   config.AppConfig rootConfig = config.AppConfig.inst;
 
+  List<String> userNames = [];
+
   @Input()
   List<UserInfoProp> userInfos = [];
-
-  List<String> userNames = [];
 
   @Input()
   UserNBox userNBox = null;
@@ -29,7 +29,8 @@ class UsersComponent implements OnInit {
   @Input()
   String cursor = "";
 
-
+  UsersComponent(){
+  }
 
   ngOnInit() {
     _init();
@@ -51,5 +52,5 @@ class UsersComponent implements OnInit {
     } catch(e){
     }
   }
-
 }
+

@@ -55,7 +55,6 @@ class UserPage implements OnInit {
   }
 
   onClick() {
-  //  _routeParams.
     _router.navigate(["Post",{"id":"new"}]);
   }
 
