@@ -65,6 +65,9 @@ class PostArticleComponent implements OnInit {
   @Input()
   String accessToken;
 
+  @Input()
+  String userName;
+
   InputImageDialogParam param = new InputImageDialogParam();
 
   PostArticleComponent(this._routeParams){
@@ -94,9 +97,9 @@ class PostArticleComponent implements OnInit {
 
     NewArtProp newArtProp = null;
     if(id == "" || id == "new" || id == null) {
-      newArtProp = await artNBox.newArt(accessToken, title: title, cont: message);
+      newArtProp = await artNBox.newArt(accessToken, userName,title: title, cont: message);
     } else {
-      newArtProp = await artNBox.updateArt(accessToken, id, title: title, cont: message);
+      newArtProp = await artNBox.updateArt(accessToken, id, userName:userName, title: title, cont: message);
     }
     if (imageSrcs.length > 0 && false == imageSrcs[0].startsWith("http")) {
       var v = conv.BASE64.decode(imageSrcs[0].replaceFirst(new RegExp(".*,"), ''));

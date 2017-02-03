@@ -138,7 +138,7 @@ class ArtNBox {
     return new ArtInfoProp(new pro.MiniProp.fromByte(response.response.asUint8List(), errorIsThrow: false));
   }
 
-  Future<NewArtProp> newArt(String accessToken,
+  Future<NewArtProp> newArt(String accessToken, String userName,
       {String articleId: "", //
       String title: "",
       String cont: "",
@@ -152,6 +152,7 @@ class ArtNBox {
     var url = ["""${backAddr}${this.basePath}/new"""].join();
     var inputData = new pro.MiniProp();
     inputData.setString("title", title);
+    inputData.setString("userName", userName);
     inputData.setString("content", cont);
     inputData.setString("token", accessToken);
     inputData.setString("target", target);
@@ -179,19 +180,21 @@ class ArtNBox {
 
   Future<NewArtProp> updateArt(String accessToken, String articleId,
       { //
-      String title: "",
-      String cont: "",
-      String info: "",
-      List<String> tags,
-      int lat: 0,
-      int lng: 0,
-      Map<String, String> props: const {}}) async {
+         String title: "",
+        String cont: "",
+        String info: "",
+        String userName:"",
+        List<String> tags,
+        int lat: 0,
+        int lng: 0,
+        Map<String, String> props: const {}}) async {
     var requester = await builder.createRequester();
     var url = ["""${backAddr}${this.basePath}/update"""].join();
     var inputData = new pro.MiniProp();
     inputData.setString("title", title);
     inputData.setString("content", cont);
     inputData.setString("token", accessToken);
+    inputData.setString("userName", userName);
     inputData.setString("articleId", articleId);
     inputData.setString("info", info);
     inputData.setNum("lat", lat);
