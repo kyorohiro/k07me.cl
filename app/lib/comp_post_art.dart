@@ -78,30 +78,44 @@ class PostArticleComponent implements OnInit {
   ngOnInit(){
     updateA();
   }
+
   updateA() async {
     if(id != null && id !="new" && id!="") {
       var v = await artNBox.getArtFromArticleId(id,"");
       title = v.title;
       message = v.cont;
+      if(v.iconUrl != "" && v.iconUrl != null) {
+        updateIcon(await artNBox.createBlobUrlFromKey(v.iconUrl));
+      }
     }
   }
 
   onPost(html.Element v) async {
-    NewArtProp newArtProp = await artNBox.newArt(accessToken, title: title, cont: message);
 
-    //String articleId, String dir, String name, typed.Uint8List data
-    if(imageSrcs.length > 0) {
+    NewArtProp newArtProp = null;
+    if(id == "") {
+      newArtProp = await artNBox.newArt(accessToken, title: title, cont: message);
+    } else {
+      newArtProp = await artNBox.updateArt(accessToken, id, title: title, cont: message);
+    }
+    if (imageSrcs.length > 0 && false == imageSrcs[0].startsWith("http")) {
       var v = conv.BASE64.decode(imageSrcs[0].replaceFirst(new RegExp(".*,"), ''));
-      await artNBox.updateFile(accessToken, newArtProp.articleId, "","icon", v);
+      await artNBox.updateFile(accessToken, newArtProp.articleId, "", "icon", v);
     }
   }
 
 
   onUpdateIcon(InputImageDialog dd) async {
     param.onFileFunc = (InputImageDialog dd) async {
-      var i = conv.BASE64.decode(dd.currentImage.src.replaceFirst(new RegExp(".*,"), ''));
-      imageSrcs.add(dd.currentImage.src);
+      var currentImage = dd.currentImage;
+      var i = conv.BASE64.decode(currentImage.src.replaceFirst(new RegExp(".*,"), ''));
+      updateIcon(i);
+
      };
     dd.open();
+  }
+
+  updateIcon(String src) async {
+    imageSrcs.add(src);
   }
 }
