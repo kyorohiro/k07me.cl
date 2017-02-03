@@ -13,7 +13,7 @@ import 'comp_article.dart';
     <div class="mybody">
     <h1>Articles</h1>
     <div *ngFor='let artInfo of artInfos'>
-        <art-component [artNBox]='artNBox' [artInfo]='artInfo' [isUpdatable]='userName==artInfo.userName'></art-component>
+        <art-component [artNBox]='artNBox' [artInfo]='artInfo' [isUpdatable]='userName==artInfo.userName' [accessToken]='accessToken'></art-component>
     </div>
     </div>
   """,
@@ -38,6 +38,9 @@ class ArticlesComponent implements OnInit {
 
   @Input()
   ArtNBox artNBox;
+
+  @Input()
+  String accessToken = "";
 
   List<ArtInfoProp> artInfos = [];
 

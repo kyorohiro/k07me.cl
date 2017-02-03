@@ -15,7 +15,7 @@ import 'comp_articles.dart';
     directives: const [ArticleComponent, ArticlesComponent],
     template:  """
     <div class="mybody">
-    <arts-component [artNBox]='rootConfig.appNBox.artNBox' [userName]='rootConfig.cookie.userName'></arts-component>
+    <arts-component [artNBox]='rootConfig.appNBox.artNBox' [userName]='rootConfig.cookie.userName' [accessToken]='rootConfig.cookie.accessToken'></arts-component>
     </div>
   """,
     styles: const[
@@ -35,6 +35,7 @@ class ArtsPage implements OnInit {
 
   ngOnInit() {
     updateConfig();
+
   }
 
   updateConfig(){

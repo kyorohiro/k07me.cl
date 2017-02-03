@@ -6,11 +6,12 @@ import 'package:k07me.prop/prop.dart';
 import 'dart:html' as html;
 
 import 'dart:async';
+import 'deleteArticle/dialog.dart';
 
 //
 @Component(
     selector: "art-component",
-    directives: const[],
+    directives: const[DeleteArticleDialog],
     template: """
     <div>
     <h2>{{artInfo.title}}</h2>
@@ -20,8 +21,10 @@ import 'dart:async';
 
     <div *ngIf='isUpdatable'>
       <button (click)='onEdit()'>Edit</button>
+      <button (click)='onDelete(myDialoga)'>Delete</button>
     </div>
-
+    <deletearticle-dialog [param]='param' #myDialoga>
+    </deletearticle-dialog>
     </div>
   """,
     styles: const[
@@ -114,7 +117,6 @@ class ArticleComponent implements OnInit {
       }
     }
     updateContent(artInfo.cont);
-
   }
 
   updateContent(String cont) {
@@ -127,5 +129,15 @@ class ArticleComponent implements OnInit {
 
   onEdit(){
     _router.navigate(["Post",{"id":artInfo.articleId}]);
+  }
+
+  DeleteArticleDialogParam param = new DeleteArticleDialogParam();
+  onDelete(DeleteArticleDialog d) {
+    param.onDeleteFunc = (DeleteArticleDialog dd) async {
+      await artNBox.deleteArticleWithToken(accessToken, _artInfo.articleId);
+    };
+    param.title = "delete";
+    param.message = "delete article";
+    d.open();
   }
 }
