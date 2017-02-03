@@ -143,7 +143,6 @@ class ArtNBox {
       String title: "",
       String cont: "",
       String info: "",
-      String target: "",
       List<String> tags,
       int lat: 0,
       int lng: 0,
@@ -155,7 +154,6 @@ class ArtNBox {
     inputData.setString("userName", userName);
     inputData.setString("content", cont);
     inputData.setString("token", accessToken);
-    inputData.setString("target", target);
     inputData.setString("articleId", articleId);
     inputData.setString("info", info);
     inputData.setNum("lat", lat);

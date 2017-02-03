@@ -49,15 +49,8 @@ import 'dart:convert' as conv;
 class PostArticleComponent implements OnInit {
   final RouteParams _routeParams;
 
-  String _id = "";
   @Input()
-  void set id(String v){
-    _id = v;
-
-  }
-  String get id => _id;
-  String title = "";
-  String message = "";
+  String id = "";
 
   @Input()
   ArtNBox artNBox = null;
@@ -68,21 +61,22 @@ class PostArticleComponent implements OnInit {
   @Input()
   String userName;
 
+  //
+  //
+  String title = "";
+  String message = "";
   InputImageDialogParam param = new InputImageDialogParam();
-
-  PostArticleComponent(this._routeParams){
-   // id = _routeParams.get("id");
-  }
-
   config.AppConfig rootConfig = config.AppConfig.inst;
-
   List<String> imageSrcs = [];
 
-  ngOnInit(){
-    updateA();
+  PostArticleComponent(this._routeParams){
   }
 
-  updateA() async {
+  ngOnInit(){
+    updateInfo();
+  }
+
+  updateInfo() async {
     if(id != null && id !="new" && id!="") {
       var v = await artNBox.getArtFromArticleId(id,"");
       title = v.title;
@@ -94,12 +88,11 @@ class PostArticleComponent implements OnInit {
   }
 
   onPost(html.Element v) async {
-
     NewArtProp newArtProp = null;
     if(id == "" || id == "new" || id == null) {
-      newArtProp = await artNBox.newArt(accessToken, userName,title: title, cont: message);
+      newArtProp = await artNBox.newArt(accessToken, userName,title: title, cont: message, props: {"s":"p"});
     } else {
-      newArtProp = await artNBox.updateArt(accessToken, id, userName:userName, title: title, cont: message);
+      newArtProp = await artNBox.updateArt(accessToken, id, userName:userName, title: title, cont: message, props: {"s":"p"});
     }
     if (imageSrcs.length > 0 && false == imageSrcs[0].startsWith("http")) {
       var v = conv.BASE64.decode(imageSrcs[0].replaceFirst(new RegExp(".*,"), ''));
@@ -107,11 +100,10 @@ class PostArticleComponent implements OnInit {
     }
   }
 
-
+  //      var i = conv.BASE64.decode(currentImage.src.replaceFirst(new RegExp(".*,"), ''));
   onUpdateIcon(InputImageDialog dd) async {
     param.onFileFunc = (InputImageDialog dd) async {
       var currentImage = dd.currentImage;
-//      var i = conv.BASE64.decode(currentImage.src.replaceFirst(new RegExp(".*,"), ''));
       updateIcon(currentImage.src);
 
      };
