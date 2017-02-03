@@ -54,7 +54,7 @@ class ArticlesComponent implements OnInit {
   }
 
   update() async {
-    ArtKeyListProp list = await artNBox.findArticle("");
+    ArtKeyListProp list = await artNBox.findArticle("",props: {"s":"p"});
     for(String key in list.keys) {
       ArtInfoProp artInfo = await artNBox.getArtFromStringId(key);
       artInfos.add(artInfo);
@@ -77,14 +77,14 @@ class ArticlesComponentInfo {
   ArticlesComponentInfo({this.parent:null}){
   }
 
-  String get accessToken => (parent == null?"":parent.accessToken);
+  String get accessToken => (parent == null ? "" : parent.accessToken);
 
-  ArtNBox get artNBox => (parent == null?"":parent.artNBox);
+  ArtNBox get artNBox => (parent == null ? "" : parent.artNBox);
 
-  bool isUpdatable(String userName)=> (parent == null?false:parent.userName==userName);
+  bool isUpdatable(String userName) => (parent == null ? false : parent.userName == userName);
 
   onRemove(ArtInfoProp art) {
-    if(parent != null && parent.artInfos.contains(art)){
+    if (parent != null && parent.artInfos.contains(art)) {
       parent.artInfos.remove(art);
     }
   }
