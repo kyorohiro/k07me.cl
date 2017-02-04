@@ -5,6 +5,7 @@ import 'package:angular2/core.dart';
 import 'package:angular2/router.dart';
 import 'package:cl/config.dart' as config;
 import 'comp_post_art.dart';
+import 'package:k07me.netbox/netbox.dart';
 
 @Component(
     selector: "my-users",
@@ -15,7 +16,7 @@ import 'comp_post_art.dart';
     [artNBox]='rootConfig.appNBox.artNBox'
     [accessToken]='rootConfig.cookie.accessToken'
     [userName]='rootConfig.cookie.userName'
-    [id]='id'></post-article-component>
+    [artInfo]='artInfo'></post-article-component>
     </div>
   """,
     styles: const[
@@ -29,9 +30,11 @@ import 'comp_post_art.dart';
 )
 class PostArticlePage implements OnInit {
   final RouteParams _routeParams;
-  String id = "";
+ ArtInfoProp artInfo = new ArtInfoProp.empty();
   PostArticlePage(this._routeParams){
-    id = _routeParams.get("id");
+    artInfo = new ArtInfoProp.empty()
+      ..articleId = _routeParams.get("id")
+      ..userName = rootConfig.cookie.userName;
   }
   config.AppConfig rootConfig = config.AppConfig.inst;
 

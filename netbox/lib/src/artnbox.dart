@@ -46,23 +46,58 @@ class ArtInfoProp {
   }
 
   String get projectId => prop.getString(ArtNBox.TypeProjectId, "");
+  //
   String get userName => prop.getString(ArtNBox.TypeUserName, "");
+  void set userName(String v) => prop.setString(ArtNBox.TypeUserName, v);
   String get userSign => prop.getString("userSign", "");
+  //
   String get title => prop.getString(ArtNBox.TypeTitle, "");
+  void set title(String v) => prop.setString(ArtNBox.TypeTitle, v);
+  //
   List<String> get tags => prop.getPropStringList(null, ArtNBox.TypeTag, []);
-  String get cont => prop.getString(ArtNBox.TypeCont, "");
-  String get info => prop.getString(ArtNBox.TypeInfo, "");
-  String get sign => prop.getString(ArtNBox.TypeSign, "");
-  String get articleId => prop.getString(ArtNBox.TypeArticleId, "");
-  List<String> get propNames => prop.getPropStringList(null, "PropNames", []);
-  List<String> get propValues => prop.getPropStringList(null, "PropValues", []);
+  void set tags(List<String> v) => prop.setPropStringList(null, ArtNBox.TypeTag, v);
 
+  //
+  String get cont => prop.getString(ArtNBox.TypeCont, "");
+  void set cont(String v) => prop.setString(ArtNBox.TypeCont, v);
+
+  //
+  String get info => prop.getString(ArtNBox.TypeInfo, "");
+  void set info(String v) => prop.setString(ArtNBox.TypeInfo, v);
+
+  //
+  String get sign => prop.getString(ArtNBox.TypeSign, "");
+  void set sign(String v) => prop.setString(ArtNBox.TypeSign, v);
+
+  //
+  String get articleId => prop.getString(ArtNBox.TypeArticleId, "");
+  void set articleId(String v) => prop.setString(ArtNBox.TypeArticleId, v);
+
+  //
   num get created => prop.getNum(ArtNBox.TypeCreated, 0);
+  void set created(num v) => prop.setNum(ArtNBox.TypeCreated, v);
+
+  //
   num get updated => prop.getNum(ArtNBox.TypeUpdated, 0);
+  void set updated(num v) => prop.setNum(ArtNBox.TypeUpdated, v);
+
+  //
   num get lat => prop.getNum("Lat", 0);
+  void set lat(num v) => prop.setNum("Lat", v);
+
+  //
   num get lng => prop.getNum("Lng", 0);
+  void set lng(num v) => prop.setNum("Lng", v);
+
+  //
   String get secretKey => prop.getString(ArtNBox.TypeSecretKey, "");
+  void set secretKey(String v) => prop.setString(ArtNBox.TypeSecretKey, v);
+
+  //
   String get iconUrl => prop.getString("IconUrl", "");
+  void set iconUrl(String v) => prop.setString("IconUrl", v);
+
+  //
   String getProp(String name, String defaultValue) {
     int index = propNames.indexOf(name);
     if (index <= -1) {
@@ -71,6 +106,18 @@ class ArtInfoProp {
       var propObj = new pro.MiniProp.fromString(propValues[index]);
       return propObj.getString(name, defaultValue);
     }
+  }
+  List<String> get propNames => prop.getPropStringList(null, "PropNames", []);
+  List<String> get propValues => prop.getPropStringList(null, "PropValues", []);
+  void setProp(Map<String,Object> props){
+    List<String> keys = [];
+    List<String> values = [];
+    for (var k in props.keys) {
+      keys.add(k);
+      values.add(props[k]);
+    }
+    prop.setPropStringList(null, "propKeys", keys);
+    prop.setPropStringList(null, "propValues", values);
   }
 }
 

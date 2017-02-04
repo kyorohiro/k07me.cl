@@ -13,14 +13,18 @@ import 'dart:convert' as conv;
     template: """
     <div class="mybody">
       <h1>Post Article</h1>
-      <div>{{id}}</div>
+      <div>{{artInfo.articleId}}</div>
       <div><label>Title</label><br>
-      <input [(ngModel)]='title' class='title'>
+      <input [(ngModel)]='artInfo.title' class='title'>
+      </div>
+      <div><label>Tag</label><br>
+      <input [(ngModel)]='tag' (keyup.enter)='onEnterTag()' class='content'>
+      </div>
+      <div><label>Message</label><br>
+      <textarea [(ngModel)]='artInfo.cont' class='content'></textarea>
       </div>
 
-      <div><label>Message</label><br>
-      <textarea [(ngModel)]='message' class='content'></textarea>
-      </div>
+
       <button (click)='onUpdateIcon(myDialoga)'>add image</button>
       <button #btn (click)='onPost(btn)'>Post</button>
 
@@ -50,7 +54,7 @@ class PostArticleComponent implements OnInit {
   final RouteParams _routeParams;
 
   @Input()
-  String id = "";
+  ArtInfoProp artInfo = new ArtInfoProp.empty();
 
   @Input()
   ArtNBox artNBox = null;
@@ -58,13 +62,15 @@ class PostArticleComponent implements OnInit {
   @Input()
   String accessToken;
 
-  @Input()
-  String userName;
+
+  String tag;
+  onEnterTag(){
+    print("==> ${tag}");
+    tag = "";
+  }
 
   //
   //
-  String title = "";
-  String message = "";
   InputImageDialogParam param = new InputImageDialogParam();
   config.AppConfig rootConfig = config.AppConfig.inst;
   List<String> imageSrcs = [];
@@ -77,10 +83,10 @@ class PostArticleComponent implements OnInit {
   }
 
   updateInfo() async {
-    if(id != null && id !="new" && id!="") {
-      var v = await artNBox.getArtFromArticleId(id,"");
-      title = v.title;
-      message = v.cont;
+    if(artInfo.articleId != null && artInfo.articleId !="new" && artInfo.articleId!="") {
+      var v = await artNBox.getArtFromArticleId(artInfo.articleId,"");
+      artInfo.title = v.title;
+      artInfo.cont = v.cont;
       if(v.iconUrl != "" && v.iconUrl != null) {
         updateIcon(await artNBox.createBlobUrlFromKey(v.iconUrl));
       }
@@ -89,10 +95,12 @@ class PostArticleComponent implements OnInit {
 
   onPost(html.Element v) async {
     NewArtProp newArtProp = null;
-    if(id == "" || id == "new" || id == null) {
-      newArtProp = await artNBox.newArt(accessToken, userName,title: title, cont: message, props: {"s":"p"});
+    if(artInfo.articleId == "" || artInfo.articleId == "new" || artInfo.articleId == null) {
+      newArtProp = await artNBox.newArt(accessToken, artInfo.userName,title: artInfo.title, cont: artInfo.cont, //
+           props: {"s":"p"});
     } else {
-      newArtProp = await artNBox.updateArt(accessToken, id, userName:userName, title: title, cont: message, props: {"s":"p"});
+      newArtProp = await artNBox.updateArt(accessToken, artInfo.articleId, userName:artInfo.userName, title: artInfo.title, cont: artInfo.cont,//
+           props: {"s":"p"});
     }
     if (imageSrcs.length > 0 && false == imageSrcs[0].startsWith("http")) {
       var v = conv.BASE64.decode(imageSrcs[0].replaceFirst(new RegExp(".*,"), ''));
