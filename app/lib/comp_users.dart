@@ -15,7 +15,7 @@ import 'config.dart' as config;
   """
 )
 class UsersComponent implements OnInit {
-  List<String> userNames = [];
+  List<String> _userNames = [];
 
   @Input()
   List<UserInfoProp> userInfos = [];
@@ -29,17 +29,16 @@ class UsersComponent implements OnInit {
   ngOnInit() {
     _init();
     for(UserInfoProp user in userInfos) {
-      userNames.add(user.userName);
+      _userNames.add(user.userName);
     }
   }
 
   _init() async {
-
     try {
       UserKeyListProp userKeys = await config.AppConfig.inst.appNBox.userNBox.findUser(cursor);
       for(String key in userKeys.keys) {
         UserInfoProp infoProp = await config.AppConfig.inst.appNBox.userNBox.getUserInfoFromKey(key);
-         if(!userNames.contains(infoProp.userName)) {
+         if(!_userNames.contains(infoProp.userName)) {
             userInfos.add(infoProp);
          }
       }

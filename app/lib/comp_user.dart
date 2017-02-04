@@ -58,10 +58,7 @@ class UserComponent implements OnInit {
   }
 
 
-  @Input()
-  bool isUpdatable;
-
-  UserInfoProp _userInfo = null;
+  UserInfoProp _userInfo = new UserInfoProp(null);
   @Input()
    void set userInfo(UserInfoProp v) {
     _userInfo = v;
@@ -69,14 +66,10 @@ class UserComponent implements OnInit {
   }
 
   UserInfoProp get userInfo => _userInfo;
+  bool get isUpdatable => config.AppConfig.inst.cookie.userName == _userInfo.userName;
 
   MeNBox get meNBox => config.AppConfig.inst.appNBox.meNBox;
 
-  @Input()
-  String accessToken;
-
-  @Input()
-  String userName;
 
   html.Element _mainElement;
 
@@ -98,9 +91,6 @@ class UserComponent implements OnInit {
     if (userInfo == null){
       userInfo = new UserInfoProp(new MiniProp());
       updateInfo();
-    }
-    if (isUpdatable == null) {
-      isUpdatable = false;
     }
   }
 
@@ -129,7 +119,7 @@ class UserComponent implements OnInit {
         return;
       }
       var i = conv.BASE64.decode(dd.currentImage.src.replaceFirst(new RegExp(".*,"), ''));
-      UploadFileProp prop = await meNBox.updateFile(accessToken,"/","icon.png", i,userName: userName);
+      UploadFileProp prop = await meNBox.updateFile(config.AppConfig.inst.cookie.accessToken,"/","icon.png", i,userName: config.AppConfig.inst.cookie.userName);
       iconUrl = await meNBox.createBlobUrlFromKey(prop.blobKey);
     };
     d.open();
@@ -140,8 +130,8 @@ class UserComponent implements OnInit {
     parama.userInfo = userInfo;
     parama.onUpdateFunc = (UpdateUserDialog dd) async {
       userInfo = await meNBox.updateUserInfo(
-          accessToken, //
-          userName,
+          config.AppConfig.inst.cookie.accessToken, //
+          config.AppConfig.inst.cookie.userName,
           displayName: dd.displayName,
           cont: dd.content
       );

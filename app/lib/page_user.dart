@@ -20,7 +20,7 @@ import 'comp_articles.dart';
     directives: const[UserComponent,PostArticleComponent,ArticlesComponent],
     template: """
     <div class="mybody">
-    <user-component  [userInfo]='userInfo' [accessToken]='rootConfig.cookie.accessToken' [userName]='rootConfig.cookie.userName' [meNBox]='rootConfig.appNBox.meNBox' [isUpdatable]='isUpdatable'></user-component>
+    <user-component  [userInfo]='userInfo'></user-component>
     <br>
     <div *ngIf='isMe'>
     <button (click)='onClick()'> New Article</button>
