@@ -18,7 +18,8 @@ import 'dart:convert' as conv;
       <input [(ngModel)]='artInfo.title' class='title'>
       </div>
       <div><label>Tag</label><br>
-      <input [(ngModel)]='tag' (keyup.enter)='onEnterTag()' class='content'>
+      <input [(ngModel)]='tag' (keyup.enter)='onEnterTag()' class='content'><br>
+      <button *ngFor='let t of artInfo.tags' (click)='onClickTag(t)'>(x) {{t}}</button>
       </div>
       <div><label>Message</label><br>
       <textarea [(ngModel)]='artInfo.cont' class='content'></textarea>
@@ -64,10 +65,7 @@ class PostArticleComponent implements OnInit {
 
 
   String tag;
-  onEnterTag(){
-    print("==> ${tag}");
-    tag = "";
-  }
+
 
   //
   //
@@ -116,6 +114,20 @@ class PostArticleComponent implements OnInit {
 
      };
     dd.open();
+  }
+
+  onEnterTag(){
+    var v = artInfo.tags;
+    v.add("${tag}");
+    artInfo.tags =v;
+    print("==> ${tag} ${v}");
+    tag = "";
+  }
+
+  onClickTag(String vv) {
+    var v = artInfo.tags;
+    v.remove(vv);
+    artInfo.tags =v;
   }
 
   updateIcon(String src) async {

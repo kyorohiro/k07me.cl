@@ -18,7 +18,7 @@ import 'dialog_logout.dart';
     <a href='{{twitterLoginUrl}}'>use Twitter</a>
     </div>
     <div *ngIf='rootConfig.cookie.accessToken != ""'>
-    <buttomn (click)='onLogout(myDialoga)'>Logout</buttomn>
+    <button (click)='onLogout(myDialoga)'>Logout</button>
     </div>
 
     <my-logout-dialog #myDialoga
