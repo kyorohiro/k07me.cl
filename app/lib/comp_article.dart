@@ -54,10 +54,11 @@ class ArticleComponent implements OnInit {
   }
 
   @Input()
-  ArticlesComponentInfo info = new ArticlesComponentInfo();
+  ArticleComponentInfo info = new ArticleComponentInfo();
 
 
   ArtInfoProp _artInfo = null;
+
   @Input()
   void set artInfo(ArtInfoProp v) {
     _artInfo = v;
@@ -105,7 +106,6 @@ class ArticleComponent implements OnInit {
   }
 
   updateContent(String cont) {
-    print("--->${cont}");
     _mainElement.children.clear();
     _mainElement.children.add(//
         new html.Element.html("""<div> ${cont.replaceAll("\n","<br>")}</div>""",//
@@ -125,5 +125,17 @@ class ArticleComponent implements OnInit {
     param.title = "delete";
     param.message = "delete article";
     d.open();
+  }
+}
+
+class ArticleComponentInfo {
+  ArticleComponentInfo();
+  String get accessToken => null;
+
+  ArtNBox get artNBox => null;
+
+  bool isUpdatable(String userName) => false;
+
+  onRemove(ArtInfoProp art) {
   }
 }

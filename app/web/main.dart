@@ -9,8 +9,8 @@ import 'package:angular2/router.dart';
 import 'package:cl/config.dart' as config;
 import 'package:cl/comp_me.dart';
 import 'dart:async';
-import 'package:cl/login_dialog.dart';
-import 'package:cl/logout_dialog.dart';
+import 'package:cl/dialog_login.dart';
+import 'package:cl/dialog_logout.dart';
 import 'package:cl/app_main.dart';
 
 

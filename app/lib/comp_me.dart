@@ -5,7 +5,7 @@ import 'config.dart' as config;
 //
 //import 'package:cl/hello_dialog/hello_dialog.dart';
 //
-import 'logout_dialog.dart';
+import 'dialog_logout.dart';
 
 //
 @Component(

@@ -9,8 +9,8 @@ import 'package:angular2/router.dart';
 import 'package:cl/config.dart' as config;
 import 'package:cl/comp_me.dart';
 import 'dart:async';
-import 'login_dialog.dart';
-import 'logout_dialog.dart';
+import 'dialog_login.dart';
+import 'dialog_logout.dart';
 import 'page_arts.dart';
 import 'page_user.dart';
 import 'page_users.dart';
@@ -132,16 +132,23 @@ import 'comp_post_art.dart';
       useAsDefault: false),
 ]
 )//    <user-components [userNBox]='rootConfig.appNBox.userNBox'></user-components>
-class AppComponent {
+class AppComponent implements OnInit {
   bool useHome = true;
   bool useMe = true;
   bool useUsers = true;
   config.AppConfig rootConfig = config.AppConfig.inst;
+
+  AppComponent(){
+
+  }
   onLogin(LoginDialog d) {
     d.open();
   }
   onLogout(LogoutDialog d) {
     d.open();
+  }
+
+  ngOnInit() {
   }
 }
 

@@ -28,14 +28,11 @@ import 'comp_article.dart';
 )
 class ArticlesComponent implements OnInit {
   final RouteParams _routeParams;
-  ArticlesComponentInfo info;
+  ArticleComponentInfo info;
 
   ArticlesComponent(this._routeParams) {
-    info = new ArticlesComponentInfo(parent:this);
+    info = new MyArticleComponentInfo(parent:this);
   }
-
-  @Input()
-  bool isUpdatable = false;
 
   @Input()
   String userName = "";
@@ -71,10 +68,12 @@ class ArticlesComponent implements OnInit {
   }
 }
 
-class ArticlesComponentInfo {
+
+
+class MyArticleComponentInfo extends ArticleComponentInfo{
   final ArticlesComponent parent;
 
-  ArticlesComponentInfo({this.parent:null}){
+  MyArticleComponentInfo({this.parent:null}) : super() {
   }
 
   String get accessToken => (parent == null ? "" : parent.accessToken);
