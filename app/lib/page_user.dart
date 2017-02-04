@@ -12,11 +12,12 @@ import 'inputimgage/dialog.dart';
 import 'updateuser/dialog.dart';
 import 'comp_user.dart';
 import 'comp_post_art.dart';
+import 'comp_articles.dart';
 
 //
 @Component(
     selector: "my-user",
-    directives: const[UserComponent,PostArticleComponent],
+    directives: const[UserComponent,PostArticleComponent,ArticlesComponent],
     template: """
     <div class="mybody">
     <user-component  [userInfo]='userInfo' [accessToken]='rootConfig.cookie.accessToken' [userName]='rootConfig.cookie.userName' [meNBox]='rootConfig.appNBox.meNBox' [isUpdatable]='isUpdatable'></user-component>
@@ -24,6 +25,12 @@ import 'comp_post_art.dart';
     <div *ngIf='isMe'>
     <button (click)='onClick()'> New Article</button>
     </div>
+
+    <arts-component
+     [artNBox]='rootConfig.appNBox.artNBox'
+     [userName]='rootConfig.cookie.userName'
+     [accessToken]='rootConfig.cookie.accessToken'
+     [params]='params'></arts-component>
     </div>
   """,
     styles: const[
@@ -39,6 +46,7 @@ class UserPage implements OnInit {
   String twitterLoginUrl = "";
   final Router _router;
   final RouteParams _routeParams;
+
   UserInfoProp userInfo = new UserInfoProp(new MiniProp());
 
   InputImageDialogParam param = new InputImageDialogParam();
@@ -48,6 +56,10 @@ class UserPage implements OnInit {
   config.AppConfig rootConfig = config.AppConfig.inst;
   bool get isUpdatable => rootConfig.cookie.userName == userInfo.userName;
   bool get isMe => rootConfig.cookie.userName == userInfo.userName;
+
+  Map<String,Object> get params => {
+    "user":_routeParams.get("name")
+  };
 
   ngOnInit() {
     twitterLoginUrl = config.AppConfig.inst.twitterLoginUrl;

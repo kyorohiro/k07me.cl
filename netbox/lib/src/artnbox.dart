@@ -314,7 +314,7 @@ class ArtNBox {
 
     //
     if (userName != "" && userName != null) {
-      urls.add("""&userNam=${Uri.encodeComponent(userName)}""");
+      urls.add("""&userName=${Uri.encodeComponent(userName)}""");
     }
 
     //
