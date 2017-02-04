@@ -45,6 +45,8 @@ class ArticleComponent implements OnInit {
   @Input()
   int contentWidth = 200;
 
+
+
   @ViewChild('image')
   set image(ElementRef elementRef) {
     if(elementRef == null || elementRef.nativeElement == null) {
@@ -73,6 +75,7 @@ class ArticleComponent implements OnInit {
 
   html.Element _mainElement;
 
+  Map<String,Object> params= {};
   @ViewChild('userinfocont')
   set main(ElementRef elementRef) {
     _mainElement = elementRef.nativeElement;
@@ -80,6 +83,8 @@ class ArticleComponent implements OnInit {
   }
 
   ArticleComponent(this._router, this._routeParams){
+    params["tag"] = _routeParams.get("tag");
+    params["user"] = _routeParams.get("user");
   }
 
 

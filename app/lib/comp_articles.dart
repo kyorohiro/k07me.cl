@@ -43,6 +43,9 @@ class ArticlesComponent implements OnInit {
   @Input()
   String accessToken = "";
 
+  @Input()
+  Map<String,Object> params= {};
+
   List<ArtInfoProp> artInfos = [];
 
   ngOnInit() {
@@ -51,17 +54,25 @@ class ArticlesComponent implements OnInit {
   }
 
   List<String> getTags() {
-    var v = _routeParams.get("tag");
+    var v = params["tag"];
     if(v == "" || v== null) {
       return [];
     } else {
       return [v];
     }
   }
+  String getUserName() {
+    var v = params["user"];
+    if(v == "" || v== null) {
+      return "";
+    } else {
+      return Uri.decodeComponent(v);
+    }
+  }
 
   update() async {
 
-    ArtKeyListProp list = await artNBox.findArticle("", props: {"s": "p"},tags: getTags());
+    ArtKeyListProp list = await artNBox.findArticle("", props: {"s": "p"},tags: getTags(),userName: getUserName());
     for (String key in list.keys) {
       ArtInfoProp artInfo = await artNBox.getArtFromStringId(key);
       artInfos.add(artInfo);

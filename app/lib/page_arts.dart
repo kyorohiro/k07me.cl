@@ -15,7 +15,11 @@ import 'comp_articles.dart';
     directives: const [ArticleComponent, ArticlesComponent],
     template:  """
     <div class="mybody">
-    <arts-component [artNBox]='rootConfig.appNBox.artNBox' [userName]='rootConfig.cookie.userName' [accessToken]='rootConfig.cookie.accessToken'></arts-component>
+    <arts-component
+     [artNBox]='rootConfig.appNBox.artNBox'
+     [userName]='rootConfig.cookie.userName'
+     [accessToken]='rootConfig.cookie.accessToken'
+     [params]='params'></arts-component>
     </div>
   """,
     styles: const[
@@ -29,10 +33,13 @@ import 'comp_articles.dart';
 )
 class ArtsPage implements OnInit {
   final RouteParams _routeParams;
-  ArtsPage(this._routeParams);
   config.AppConfig rootConfig = config.AppConfig.inst;
+  Map<String,Object> params = {};
 
-
+  ArtsPage(this._routeParams){
+    params["tag"] = this._routeParams.get("tag");
+    params["user"] = this._routeParams.get("user");
+  }
   ngOnInit() {
     updateConfig();
 

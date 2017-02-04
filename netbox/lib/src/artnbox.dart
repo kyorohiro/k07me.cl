@@ -223,8 +223,8 @@ class ArtNBox {
         String cont: "",
         String info: "",
         List<String> tags,
-        int lat: 0,
-        int lng: 0,
+        int lat: -999,
+        int lng: -999,
         Map<String, String> props: const {}}) async {
     var requester = await builder.createRequester();
     var url = ["""${backAddr}${this.basePath}/new"""].join();
@@ -260,7 +260,7 @@ class ArtNBox {
     String cont: null,
     String info: null,
     String userName: "",
-    List<String> tags:const [],
+    List<String> tags: const [],
     int lat: -999,
     int lng: -999,
     Map<String, String> props: const {}}) async {
@@ -270,33 +270,33 @@ class ArtNBox {
     inputData.setString("token", accessToken);
     inputData.setString("userName", userName);
     inputData.setString("articleId", articleId);
-    if(title != null) {
+    if (title != null) {
       inputData.setString("title", title);
     }
-    if(cont != null) {
+    if (cont != null) {
       inputData.setString("content", cont);
     }
-    if(info != null) {
+    if (info != null) {
       inputData.setString("info", info);
     }
-    if(lat != -999) {
+    if (lat != -999) {
       inputData.setNum("lat", lat);
     }
-    if(lng != -999) {
+    if (lng != -999) {
       inputData.setNum("lng", lng);
     }
-    if(tags != null && tags.length > 0) {
+    if (tags != null && tags.length > 0) {
       inputData.setPropStringList(null, "tags", tags);
-      {
-        List<String> keys = [];
-        List<String> values = [];
-        for (var k in props.keys) {
-          keys.add(k);
-          values.add(props[k]);
-        }
-        inputData.setPropStringList(null, "propKeys", keys);
-        inputData.setPropStringList(null, "propValues", values);
+    }
+    if (props != null && props.length > 0) {
+      List<String> keys = [];
+      List<String> values = [];
+      for (var k in props.keys) {
+        keys.add(k);
+        values.add(props[k]);
       }
+      inputData.setPropStringList(null, "propKeys", keys);
+      inputData.setPropStringList(null, "propValues", values);
     }
     req.Response response = await requester.request(req.Requester.TYPE_POST, url, data: inputData.toJson());
     if (response.status != 200) {
@@ -305,19 +305,28 @@ class ArtNBox {
     return new NewArtProp(new pro.MiniProp.fromByte(response.response.asUint8List(), errorIsThrow: false));
   }
 
-  Future<ArtKeyListProp> findArticle(String cursor, {String userName: "", Map<String, String> props: const {}, List<String> tags: const []}) async {
+  Future<ArtKeyListProp> findArticle(String cursor, {
+    String userName: "",
+    Map<String, String> props: const {},
+    List<String> tags: const []}) async {
+
     var urls = ["""${backAddr}${this.basePath}/find?cursor=${Uri.encodeComponent(cursor)}"""];
+
+    //
     if (userName != "" && userName != null) {
       urls.add("""&userNam=${Uri.encodeComponent(userName)}""");
     }
+
     //
     for (String k in props.keys) {
       urls.add("""&p-${Uri.encodeComponent(k)}=${Uri.encodeComponent(props[k])}""");
     }
+
     //
     for (int i = 0; i < tags.length; i++) {
       urls.add("&t-${i}=${Uri.encodeComponent(tags[i])}");
     }
+
     //
     var url = urls.join("");
     var requester = await builder.createRequester();
