@@ -8,6 +8,7 @@ import 'dart:html' as html;
 import 'inputimgage/dialog.dart';
 import 'updateuser/dialog.dart';
 import 'dart:async';
+import 'config.dart' as config;
 
 //
 @Component(
@@ -69,14 +70,7 @@ class UserComponent implements OnInit {
 
   UserInfoProp get userInfo => _userInfo;
 
-  MeNBox _meNBox;
-  @Input()
-  void set meNBox(MeNBox v) {
-    _meNBox = v;
-    updateInfo();
-  }
-
-  MeNBox get meNBox => _meNBox;
+  MeNBox get meNBox => config.AppConfig.inst.appNBox.meNBox;
 
   @Input()
   String accessToken;

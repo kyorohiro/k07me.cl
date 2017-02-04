@@ -10,21 +10,15 @@ import 'config.dart' as config;
   directives: const [UserComponent],
   template: """
   <div>
-  <div *ngFor='let ui of userInfos'><user-component  [userInfo]='ui' [meNBox]='rootConfig.appNBox.meNBox'></user-component></div>
+  <div *ngFor='let ui of userInfos'><user-component  [userInfo]='ui'></user-component></div>
   </div>
   """
 )
 class UsersComponent implements OnInit {
-
-  config.AppConfig rootConfig = config.AppConfig.inst;
-
   List<String> userNames = [];
 
   @Input()
   List<UserInfoProp> userInfos = [];
-
-  @Input()
-  UserNBox userNBox = null;
 
   @Input()
   String cursor = "";
@@ -40,12 +34,12 @@ class UsersComponent implements OnInit {
   }
 
   _init() async {
+
     try {
-      UserKeyListProp userKeys = await userNBox.findUser(cursor);
+      UserKeyListProp userKeys = await config.AppConfig.inst.appNBox.userNBox.findUser(cursor);
       for(String key in userKeys.keys) {
-        UserInfoProp infoProp = await userNBox.getUserInfoFromKey(key);
+        UserInfoProp infoProp = await config.AppConfig.inst.appNBox.userNBox.getUserInfoFromKey(key);
          if(!userNames.contains(infoProp.userName)) {
-            print("--> ${infoProp.userName} ${infoProp.iconUrl}");
             userInfos.add(infoProp);
          }
       }
