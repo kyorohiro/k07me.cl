@@ -12,9 +12,9 @@ import 'config.dart' as config;
 
 //
 @Component(
-    selector: "user-component",
-    directives: const[InputImageDialog,UpdateUserDialog],
-    template: """
+  selector: "user-component",
+  directives: const[InputImageDialog, UpdateUserDialog],
+  template: """
     <div>
     <img #image1 *ngIf='iconUrl==""' src='/assets/egg.png'>
     <img #image *ngIf='iconUrl!=""' src='{{iconUrl}}'>
@@ -34,10 +34,6 @@ import 'config.dart' as config;
     </updateuser-dialog>
     </div>
   """,
-    styles: const[
-      """
-    """,
-    ]
 )
 class UserComponent implements OnInit {
   final RouteParams _routeParams;
@@ -51,75 +47,72 @@ class UserComponent implements OnInit {
 
   @ViewChild('image')
   set image(ElementRef elementRef) {
-    if(elementRef == null || elementRef.nativeElement == null) {
+    if (elementRef == null || elementRef.nativeElement == null) {
       return;
     }
     (elementRef.nativeElement as html.ImageElement).style.width = "${imageWidth}px";
   }
 
 
-  UserInfoProp _userInfo = new UserInfoProp(null);
   @Input()
-   void set userInfo(UserInfoProp v) {
-    _userInfo = v;
-    updateInfo();
-  }
+  UserInfoProp userInfo = new UserInfoProp(null);
 
-  UserInfoProp get userInfo => _userInfo;
-  bool get isUpdatable => config.AppConfig.inst.cookie.userName == _userInfo.userName;
+  bool get isUpdatable => config.AppConfig.inst.cookie.userName == userInfo.userName;
 
   MeNBox get meNBox => config.AppConfig.inst.appNBox.meNBox;
 
 
-  html.Element _mainElement;
+  html.Element _userInfoElement;
 
   @ViewChild('userinfocont')
   set main(ElementRef elementRef) {
-    _mainElement = elementRef.nativeElement;
-    _mainElement.style.width ="${contentWidth}px";
+    _userInfoElement = elementRef.nativeElement;
+    _userInfoElement.style.width = "${contentWidth}px";
   }
 
   //
   InputImageDialogParam param = new InputImageDialogParam();
   UpdateUserDialogParam parama = new UpdateUserDialogParam();
 
-  UserComponent(this._routeParams){
- }
+  UserComponent(this._routeParams) {
+  }
 
 
   ngOnInit() {
-    if (userInfo == null){
+    if (userInfo == null) {
       userInfo = new UserInfoProp(new MiniProp());
       updateInfo();
     }
   }
 
-  updateInfo()async {
-    if(meNBox != null && userInfo != null) {
+  updateInfo() async {
+    if (meNBox != null && userInfo != null) {
       try {
         iconUrl = await meNBox.createBlobUrlFromKey(userInfo.iconUrl);
         updateContent(userInfo.content);
-      } catch(e) {
+      } catch (e) {
         print("--e-- ${e}");
       }
     }
   }
 
   updateContent(String cont) {
-    _mainElement.children.clear();
-    _mainElement.children.add(//
-        new html.Element.html("""<div> ${cont.replaceAll("\n","<br>")}</div>""",//
+    _userInfoElement.children.clear();
+    _userInfoElement.children.add( //
+        new html.Element.html("""<div> ${cont.replaceAll("\n", "<br>")}</div>""", //
             treeSanitizer: html.NodeTreeSanitizer.trusted));
   }
 
   onUpdateIcon(InputImageDialog d) {
     param = new InputImageDialogParam();
     param.onFileFunc = (InputImageDialog dd) async {
-      if(userInfo == null) {
+      if (userInfo == null) {
         return;
       }
       var i = conv.BASE64.decode(dd.currentImage.src.replaceFirst(new RegExp(".*,"), ''));
-      UploadFileProp prop = await meNBox.updateFile(config.AppConfig.inst.cookie.accessToken,"/","icon.png", i,userName: config.AppConfig.inst.cookie.userName);
+      UploadFileProp prop = await meNBox.updateFile(
+          config.AppConfig.inst.cookie.accessToken, "/", "icon.png", //
+          i, userName: config.AppConfig.inst.cookie.userName);
       iconUrl = await meNBox.createBlobUrlFromKey(prop.blobKey);
     };
     d.open();
