@@ -79,10 +79,7 @@ class UserComponent implements OnInit {
 
 
   ngOnInit() {
-    if (userInfo == null) {
-      userInfo = new UserInfoProp(new MiniProp());
-      updateInfo();
-    }
+    updateInfo();
   }
 
   updateInfo() async {
