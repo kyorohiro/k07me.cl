@@ -12,7 +12,7 @@ import 'comp_users.dart';
     template:  """
     <div class="mybody">
     <h1>Users</h1>
-    <user-components [userNBox]='rootConfig.appNBox.userNBox'></user-components>
+    <user-components></user-components>
     </div>
   """,
     styles: const[

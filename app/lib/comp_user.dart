@@ -28,9 +28,9 @@ import 'config.dart' as config;
       <button (click)='onUpdateInfo(myDialogb)'> updateInfo</button>
     </div>
 
-    <inputimage-dialog [param]="param" #myDialoga>
+    <inputimage-dialog [param]="paramOfInputImageDialog" #myDialoga>
     </inputimage-dialog>
-    <updateuser-dialog [param]="parama" #myDialogb>
+    <updateuser-dialog [param]="paramOfUpdateDialog" #myDialogb>
     </updateuser-dialog>
     </div>
   """,
@@ -45,6 +45,15 @@ class UserComponent implements OnInit {
   @Input()
   int contentWidth = 200;
 
+  UserInfoProp _userInfo = new UserInfoProp(null);
+  @Input()
+  void set userInfo(UserInfoProp v){
+    _userInfo = v;
+    updateInfo();
+  }
+  UserInfoProp get userInfo => _userInfo;
+
+
   @ViewChild('image')
   set image(ElementRef elementRef) {
     if (elementRef == null || elementRef.nativeElement == null) {
@@ -53,14 +62,9 @@ class UserComponent implements OnInit {
     (elementRef.nativeElement as html.ImageElement).style.width = "${imageWidth}px";
   }
 
-
-  @Input()
-  UserInfoProp userInfo = new UserInfoProp(null);
-
   bool get isUpdatable => config.AppConfig.inst.cookie.userName == userInfo.userName;
 
   MeNBox get meNBox => config.AppConfig.inst.appNBox.meNBox;
-
 
   html.Element _userInfoElement;
 
@@ -71,8 +75,8 @@ class UserComponent implements OnInit {
   }
 
   //
-  InputImageDialogParam param = new InputImageDialogParam();
-  UpdateUserDialogParam parama = new UpdateUserDialogParam();
+  InputImageDialogParam paramOfInputImageDialog = new InputImageDialogParam();
+  UpdateUserDialogParam paramOfUpdateDialog = new UpdateUserDialogParam();
 
   UserComponent(this._routeParams) {
   }
@@ -86,23 +90,19 @@ class UserComponent implements OnInit {
     if (meNBox != null && userInfo != null) {
       try {
         iconUrl = await meNBox.createBlobUrlFromKey(userInfo.iconUrl);
-        updateContent(userInfo.content);
+        _userInfoElement.children.clear();
+        _userInfoElement.children.add( //
+            new html.Element.html("""<div> ${userInfo.content.replaceAll("\n", "<br>")}</div>""", //
+                treeSanitizer: html.NodeTreeSanitizer.trusted));
       } catch (e) {
         print("--e-- ${e}");
       }
     }
   }
 
-  updateContent(String cont) {
-    _userInfoElement.children.clear();
-    _userInfoElement.children.add( //
-        new html.Element.html("""<div> ${cont.replaceAll("\n", "<br>")}</div>""", //
-            treeSanitizer: html.NodeTreeSanitizer.trusted));
-  }
-
   onUpdateIcon(InputImageDialog d) {
-    param = new InputImageDialogParam();
-    param.onFileFunc = (InputImageDialog dd) async {
+    paramOfInputImageDialog = new InputImageDialogParam();
+    paramOfInputImageDialog.onFileFunc = (InputImageDialog dd) async {
       if (userInfo == null) {
         return;
       }
@@ -116,9 +116,9 @@ class UserComponent implements OnInit {
   }
 
   onUpdateInfo(UpdateUserDialog d) {
-    parama = new UpdateUserDialogParam();
-    parama.userInfo = userInfo;
-    parama.onUpdateFunc = (UpdateUserDialog dd) async {
+    paramOfUpdateDialog = new UpdateUserDialogParam();
+    paramOfUpdateDialog.userInfo = userInfo;
+    paramOfUpdateDialog.onUpdateFunc = (UpdateUserDialog dd) async {
       userInfo = await meNBox.updateUserInfo(
           config.AppConfig.inst.cookie.accessToken, //
           config.AppConfig.inst.cookie.userName,
