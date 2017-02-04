@@ -81,12 +81,11 @@ class PostArticleComponent implements OnInit {
   }
 
   updateInfo() async {
+    print("updateInfo ${artInfo.tags}");
     if(artInfo.articleId != null && artInfo.articleId !="new" && artInfo.articleId!="") {
-      var v = await artNBox.getArtFromArticleId(artInfo.articleId,"");
-      artInfo.title = v.title;
-      artInfo.cont = v.cont;
-      if(v.iconUrl != "" && v.iconUrl != null) {
-        updateIcon(await artNBox.createBlobUrlFromKey(v.iconUrl));
+    artInfo = await artNBox.getArtFromArticleId(artInfo.articleId,"");
+      if(artInfo.iconUrl != "" && artInfo.iconUrl != null) {
+        updateIcon(await artNBox.createBlobUrlFromKey(artInfo.iconUrl));
       }
     }
   }
@@ -95,10 +94,10 @@ class PostArticleComponent implements OnInit {
     NewArtProp newArtProp = null;
     if(artInfo.articleId == "" || artInfo.articleId == "new" || artInfo.articleId == null) {
       newArtProp = await artNBox.newArt(accessToken, artInfo.userName,title: artInfo.title, cont: artInfo.cont, //
-           props: {"s":"p"});
+           props: {"s":"p"},tags: artInfo.tags);
     } else {
       newArtProp = await artNBox.updateArt(accessToken, artInfo.articleId, userName:artInfo.userName, title: artInfo.title, cont: artInfo.cont,//
-           props: {"s":"p"});
+           props: {"s":"p"},tags: artInfo.tags);
     }
     if (imageSrcs.length > 0 && false == imageSrcs[0].startsWith("http")) {
       var v = conv.BASE64.decode(imageSrcs[0].replaceFirst(new RegExp(".*,"), ''));
