@@ -2,8 +2,11 @@ part of firestyle.cl.netbox;
 
 class ArtKeyListProp {
   pro.MiniProp prop;
+
   ArtKeyListProp(this.prop) {}
+
   List<String> get keys => this.prop.getPropStringList(null, "keys", []);
+
   List<ArtInfoKey> get keyObjs {
     List<ArtInfoKey> ret = [];
     for (String k in keys) {
@@ -13,22 +16,28 @@ class ArtKeyListProp {
   }
 
   String get cursorOne => this.prop.getPropString(null, "cursorOne", "");
+
   String get cursorNext => this.prop.getPropString(null, "cursorNext", "");
 }
 
 class NewArtProp {
   pro.MiniProp prop;
+
   NewArtProp(this.prop) {}
+
   String get articleId => this.prop.getString("articleId", "");
 }
 
 class ArtInfoKey {
   String key;
   pro.MiniProp prop;
+
   ArtInfoKey(this.key) {
     prop = new pro.MiniProp.fromString(this.key);
   }
+
   String get articleId => prop.getString("i", "");
+
   String get sign => prop.getString("s", "");
 }
 
@@ -46,55 +55,72 @@ class ArtInfoProp {
   }
 
   String get projectId => prop.getString(ArtNBox.TypeProjectId, "");
+
   //
   String get userName => prop.getString(ArtNBox.TypeUserName, "");
+
   void set userName(String v) => prop.setString(ArtNBox.TypeUserName, v);
+
   String get userSign => prop.getString("userSign", "");
+
   //
   String get title => prop.getString(ArtNBox.TypeTitle, "");
+
   void set title(String v) => prop.setString(ArtNBox.TypeTitle, v);
+
   //
   List<String> get tags => prop.getPropStringList(null, ArtNBox.TypeTag, []);
+
   void set tags(List<String> v) => prop.setPropStringList(null, ArtNBox.TypeTag, v);
 
   //
   String get cont => prop.getString(ArtNBox.TypeCont, "");
+
   void set cont(String v) => prop.setString(ArtNBox.TypeCont, v);
 
   //
   String get info => prop.getString(ArtNBox.TypeInfo, "");
+
   void set info(String v) => prop.setString(ArtNBox.TypeInfo, v);
 
   //
   String get sign => prop.getString(ArtNBox.TypeSign, "");
+
   void set sign(String v) => prop.setString(ArtNBox.TypeSign, v);
 
   //
   String get articleId => prop.getString(ArtNBox.TypeArticleId, "");
+
   void set articleId(String v) => prop.setString(ArtNBox.TypeArticleId, v);
 
   //
   num get created => prop.getNum(ArtNBox.TypeCreated, 0);
+
   void set created(num v) => prop.setNum(ArtNBox.TypeCreated, v);
 
   //
   num get updated => prop.getNum(ArtNBox.TypeUpdated, 0);
+
   void set updated(num v) => prop.setNum(ArtNBox.TypeUpdated, v);
 
   //
   num get lat => prop.getNum("Lat", 0);
+
   void set lat(num v) => prop.setNum("Lat", v);
 
   //
   num get lng => prop.getNum("Lng", 0);
+
   void set lng(num v) => prop.setNum("Lng", v);
 
   //
   String get secretKey => prop.getString(ArtNBox.TypeSecretKey, "");
+
   void set secretKey(String v) => prop.setString(ArtNBox.TypeSecretKey, v);
 
   //
   String get iconUrl => prop.getString("IconUrl", "");
+
   void set iconUrl(String v) => prop.setString("IconUrl", v);
 
   //
@@ -107,9 +133,12 @@ class ArtInfoProp {
       return propObj.getString(name, defaultValue);
     }
   }
+
   List<String> get propNames => prop.getPropStringList(null, "PropNames", []);
+
   List<String> get propValues => prop.getPropStringList(null, "PropValues", []);
-  void setProp(Map<String,Object> props){
+
+  void setProp(Map<String, Object> props) {
     List<String> keys = [];
     List<String> values = [];
     for (var k in props.keys) {
@@ -135,6 +164,7 @@ class ArtNBox {
   static final String TypeUpdated = "Updated";
   static final String TypeSecretKey = "SecretKey";
   static final String TypeTarget = "Target";
+
   //
   static const String ModeQuery = "q";
   static const String ModeSign = "s";
@@ -142,7 +172,9 @@ class ArtNBox {
   req.NetBuilder builder;
   String backAddr;
   String basePath;
+
   ArtNBox(this.builder, this.backAddr, {this.basePath: "/api/v1/art"}) {}
+
   //
 
   Future<String> createBlobUrlFromKey(String key) async {
@@ -187,13 +219,13 @@ class ArtNBox {
 
   Future<NewArtProp> newArt(String accessToken, String userName,
       {String articleId: "", //
-      String title: "",
-      String cont: "",
-      String info: "",
-      List<String> tags,
-      int lat: 0,
-      int lng: 0,
-      Map<String, String> props: const {}}) async {
+        String title: "",
+        String cont: "",
+        String info: "",
+        List<String> tags,
+        int lat: 0,
+        int lng: 0,
+        Map<String, String> props: const {}}) async {
     var requester = await builder.createRequester();
     var url = ["""${backAddr}${this.basePath}/new"""].join();
     var inputData = new pro.MiniProp();
@@ -223,37 +255,48 @@ class ArtNBox {
     return new NewArtProp(new pro.MiniProp.fromByte(response.response.asUint8List(), errorIsThrow: false));
   }
 
-  Future<NewArtProp> updateArt(String accessToken, String articleId,
-      { //
-         String title: "",
-        String cont: "",
-        String info: "",
-        String userName:"",
-        List<String> tags,
-        int lat: 0,
-        int lng: 0,
-        Map<String, String> props: const {}}) async {
+  Future<NewArtProp> updateArt(String accessToken, String articleId, {
+    String title: null,
+    String cont: null,
+    String info: null,
+    String userName: "",
+    List<String> tags:const [],
+    int lat: -999,
+    int lng: -999,
+    Map<String, String> props: const {}}) async {
     var requester = await builder.createRequester();
     var url = ["""${backAddr}${this.basePath}/update"""].join();
     var inputData = new pro.MiniProp();
-    inputData.setString("title", title);
-    inputData.setString("content", cont);
     inputData.setString("token", accessToken);
     inputData.setString("userName", userName);
     inputData.setString("articleId", articleId);
-    inputData.setString("info", info);
-    inputData.setNum("lat", lat);
-    inputData.setNum("lng", lng);
-    inputData.setPropStringList(null, "tags", tags);
-    {
-      List<String> keys = [];
-      List<String> values = [];
-      for (var k in props.keys) {
-        keys.add(k);
-        values.add(props[k]);
+    if(title != null) {
+      inputData.setString("title", title);
+    }
+    if(cont != null) {
+      inputData.setString("content", cont);
+    }
+    if(info != null) {
+      inputData.setString("info", info);
+    }
+    if(lat != -999) {
+      inputData.setNum("lat", lat);
+    }
+    if(lng != -999) {
+      inputData.setNum("lng", lng);
+    }
+    if(tags != null && tags.length > 0) {
+      inputData.setPropStringList(null, "tags", tags);
+      {
+        List<String> keys = [];
+        List<String> values = [];
+        for (var k in props.keys) {
+          keys.add(k);
+          values.add(props[k]);
+        }
+        inputData.setPropStringList(null, "propKeys", keys);
+        inputData.setPropStringList(null, "propValues", values);
       }
-      inputData.setPropStringList(null, "propKeys", keys);
-      inputData.setPropStringList(null, "propValues", values);
     }
     req.Response response = await requester.request(req.Requester.TYPE_POST, url, data: inputData.toJson());
     if (response.status != 200) {
