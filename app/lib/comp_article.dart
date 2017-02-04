@@ -20,7 +20,7 @@ import 'comp_articles.dart';
     <img #image *ngIf='iconUrl!=""' src='{{iconUrl}}'>
 
     <div #userinfocont></div>
-
+    <button *ngFor='let t of artInfo.tags' (click)='onClickTag(t)'>{{t}}</button>
     <div *ngIf='info.isUpdatable(artInfo.userName)'>
       <button (click)='onEdit()'>Edit</button>
       <button (click)='onDelete(myDialoga)'>Delete</button>
@@ -125,6 +125,10 @@ class ArticleComponent implements OnInit {
     param.title = "delete";
     param.message = "delete article";
     d.open();
+  }
+
+  onClickTag(t){
+
   }
 }
 
