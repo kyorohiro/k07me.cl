@@ -26,7 +26,7 @@ import 'comp_post_art.dart';
   <nav class='myul'>
 
   <div *ngIf='useHome==true'>
-  <a class='myli' [routerLink]="['Home']">Home</a>
+  <a class='myli' [routerLink]="['Arts']">Home</a>
   </div>
   <div *ngIf='useUsers==true'>
   <a class='myli' [routerLink]="['Users']">Users</a>
@@ -106,7 +106,7 @@ import 'comp_post_art.dart';
 @RouteConfig( const[
   const Route(
       path: "/",
-      name: "Home",
+      name: "Arts",
       component: ArtsPage,
       useAsDefault: true),
   const Route(

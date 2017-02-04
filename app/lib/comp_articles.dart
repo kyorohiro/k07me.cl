@@ -1,4 +1,3 @@
-
 import 'package:angular2/core.dart';
 import 'package:angular2/router.dart';
 import 'package:cl/config.dart' as config;
@@ -9,7 +8,7 @@ import 'comp_article.dart';
 @Component(
     selector: "arts-component",
     directives: const [ArticleComponent],
-    template:  """
+    template: """
     <div class="mybody">
     <h1>Articles</h1>
     <div *ngFor='let artInfo of artInfos'>
@@ -27,11 +26,12 @@ import 'comp_article.dart';
     ]
 )
 class ArticlesComponent implements OnInit {
+  final Router _router;
   final RouteParams _routeParams;
   ArticleComponentInfo info;
 
-  ArticlesComponent(this._routeParams) {
-    info = new MyArticleComponentInfo(parent:this);
+  ArticlesComponent(this._router, this._routeParams) {
+    info = new MyArticleComponentInfo(parent: this);
   }
 
   @Input()
@@ -50,17 +50,27 @@ class ArticlesComponent implements OnInit {
     update();
   }
 
+  List<String> getTags() {
+    var v = _routeParams.get("tag");
+    if(v == "" || v== null) {
+      return [];
+    } else {
+      return [v];
+    }
+  }
+
   update() async {
-    ArtKeyListProp list = await artNBox.findArticle("",props: {"s":"p"});
-    for(String key in list.keys) {
+
+    ArtKeyListProp list = await artNBox.findArticle("", props: {"s": "p"},tags: getTags());
+    for (String key in list.keys) {
       ArtInfoProp artInfo = await artNBox.getArtFromStringId(key);
       artInfos.add(artInfo);
     }
   }
 
-  updateConfig(){
+  updateConfig() {
     print(_routeParams.params.toString());
-    if(_routeParams.params.containsKey("token")) {
+    if (_routeParams.params.containsKey("token")) {
       config.AppConfig.inst.cookie.accessToken = Uri.decodeFull(_routeParams.params["token"]);
       config.AppConfig.inst.cookie.setIsMaster(_routeParams.params["isMaster"]);
       config.AppConfig.inst.cookie.userName = Uri.decodeFull(_routeParams.params["userName"]);
@@ -69,11 +79,10 @@ class ArticlesComponent implements OnInit {
 }
 
 
-
-class MyArticleComponentInfo extends ArticleComponentInfo{
+class MyArticleComponentInfo extends ArticleComponentInfo {
   final ArticlesComponent parent;
 
-  MyArticleComponentInfo({this.parent:null}) : super() {
+  MyArticleComponentInfo({this.parent: null}) : super() {
   }
 
   String get accessToken => (parent == null ? "" : parent.accessToken);
@@ -86,5 +95,9 @@ class MyArticleComponentInfo extends ArticleComponentInfo{
     if (parent != null && parent.artInfos.contains(art)) {
       parent.artInfos.remove(art);
     }
+  }
+
+  onClickTag(String t) {
+    parent._router.navigate(["Arts",{"tag":t}]);
   }
 }

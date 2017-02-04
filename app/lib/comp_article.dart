@@ -128,7 +128,9 @@ class ArticleComponent implements OnInit {
   }
 
   onClickTag(t){
-
+    if(info != null) {
+      info.onClickTag(t);
+    }
   }
 }
 
@@ -141,5 +143,9 @@ class ArticleComponentInfo {
   bool isUpdatable(String userName) => false;
 
   onRemove(ArtInfoProp art) {
+  }
+
+  onClickTag(String t) {
+
   }
 }
