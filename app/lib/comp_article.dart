@@ -9,6 +9,7 @@ import 'dart:async';
 import 'deleteArticle/dialog.dart';
 
 import 'comp_articles.dart';
+import 'config.dart' as config;
 
 //
 @Component(
@@ -141,11 +142,11 @@ class ArticleComponent implements OnInit {
 
 class ArticleComponentInfo {
   ArticleComponentInfo();
-  String get accessToken => null;
+  String get userName => config.AppConfig.inst.cookie.userName;
 
-  ArtNBox get artNBox => null;
+  ArtNBox get artNBox => config.AppConfig.inst.appNBox.artNBox;
 
-  bool isUpdatable(String userName) => false;
+  String get accessToken => config.AppConfig.inst.cookie.accessToken;
 
   onRemove(ArtInfoProp art) {
   }

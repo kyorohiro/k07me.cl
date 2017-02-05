@@ -27,9 +27,6 @@ import 'comp_articles.dart';
     </div>
 
     <arts-component
-     [artNBox]='rootConfig.appNBox.artNBox'
-     [userName]='rootConfig.cookie.userName'
-     [accessToken]='rootConfig.cookie.accessToken'
      [params]='params'></arts-component>
     </div>
   """,

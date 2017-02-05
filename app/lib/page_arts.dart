@@ -16,9 +16,6 @@ import 'comp_articles.dart';
     template:  """
     <div class="mybody">
     <arts-component
-     [artNBox]='rootConfig.appNBox.artNBox'
-     [userName]='rootConfig.cookie.userName'
-     [accessToken]='rootConfig.cookie.accessToken'
      [params]='params'></arts-component>
     </div>
   """,

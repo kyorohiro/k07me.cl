@@ -35,21 +35,11 @@ class ArticlesComponent implements OnInit {
   }
 
   @Input()
-  String userName = "";
-
-  @Input()
-  ArtNBox artNBox;
-
-  @Input()
-  String accessToken = "";
-
-  @Input()
   Map<String,Object> params= {};
 
   List<ArtInfoProp> artInfos = [];
 
   ngOnInit() {
-    updateConfig();
     update();
   }
 
@@ -61,6 +51,7 @@ class ArticlesComponent implements OnInit {
       return [v];
     }
   }
+
   String getUserName() {
     var v = params["user"];
     if(v == "" || v== null) {
@@ -71,7 +62,7 @@ class ArticlesComponent implements OnInit {
   }
 
   update() async {
-
+    ArtNBox artNBox = config.AppConfig.inst.appNBox.artNBox;
     ArtKeyListProp list = await artNBox.findArticle("", props: {"s": "p"},tags: getTags(),userName: getUserName());
     for (String key in list.keys) {
       ArtInfoProp artInfo = await artNBox.getArtFromStringId(key);
@@ -79,28 +70,15 @@ class ArticlesComponent implements OnInit {
     }
   }
 
-  updateConfig() {
-    print(_routeParams.params.toString());
-    if (_routeParams.params.containsKey("token")) {
-      config.AppConfig.inst.cookie.accessToken = Uri.decodeFull(_routeParams.params["token"]);
-      config.AppConfig.inst.cookie.setIsMaster(_routeParams.params["isMaster"]);
-      config.AppConfig.inst.cookie.userName = Uri.decodeFull(_routeParams.params["userName"]);
-    }
-  }
 }
 
 
 class MyArticleComponentInfo extends ArticleComponentInfo {
   final ArticlesComponent parent;
 
-  MyArticleComponentInfo({this.parent: null}) : super() {
-  }
+  MyArticleComponentInfo({this.parent: null}) : super() ;
 
-  String get accessToken => (parent == null ? "" : parent.accessToken);
-
-  ArtNBox get artNBox => (parent == null ? "" : parent.artNBox);
-
-  bool isUpdatable(String userName) => (parent == null ? false : parent.userName == userName);
+  bool isUpdatable(String userName) => (parent == null ? false : config.AppConfig.inst.cookie.userName == userName);
 
   onRemove(ArtInfoProp art) {
     if (parent != null && parent.artInfos.contains(art)) {
