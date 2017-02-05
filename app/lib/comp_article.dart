@@ -44,7 +44,7 @@ class ArticleComponent implements OnInit {
   int imageWidth = 200;
 
   @Input()
-  int contentWidth = 200;
+  int contentWidth = 210;
 
 
 
@@ -83,9 +83,15 @@ class ArticleComponent implements OnInit {
     _mainElement.style.width ="${contentWidth}px";
   }
 
-  ArticleComponent(this._router, this._routeParams){
+  ArticleComponent(ElementRef element,this._router, this._routeParams){
     params["tag"] = _routeParams.get("tag");
     params["user"] = _routeParams.get("user");
+    var elm = element.nativeElement;
+    print("${elm}");
+    (elm as html.Element).style.width = "${imageWidth+4}px";
+//    (elm as html.Element).style.boxShadow = "10px 10px 5px grey;";
+    (elm as html.Element).style.boxShadow = "2px 2px 1px grey";
+    (elm as html.Element).style.display = 'inline-block';
   }
 
 
