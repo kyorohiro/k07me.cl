@@ -135,7 +135,7 @@ import 'comp_post_art.dart';
       component: PostArticlePage,
       useAsDefault: false),
 ]
-)//    <user-components [userNBox]='rootConfig.appNBox.userNBox'></user-components>
+)
 class AppComponent implements OnInit {
   bool useHome = true;
   bool useMe = true;

@@ -100,12 +100,13 @@ class PostArticleComponent implements OnInit {
 
   onPost(html.Element v) async {
     NewArtProp newArtProp = null;
+    var v = new prop.MiniProp.fromMap({"url":url});
     if(artInfo.articleId == "" || artInfo.articleId == "new" || artInfo.articleId == null) {
       newArtProp = await artNBox.newArt(accessToken, artInfo.userName,title: artInfo.title, cont: artInfo.cont, //
-           props: {"s":"p"},tags: artInfo.tags);
+           props: {"s":"p"},tags: artInfo.tags,info:v.toJson());
     } else {
       newArtProp = await artNBox.updateArt(accessToken, artInfo.articleId, userName:artInfo.userName, title: artInfo.title, cont: artInfo.cont,//
-           props: {"s":"p"},tags: artInfo.tags);
+           props: {"s":"p"},tags: artInfo.tags,info:v.toJson());
     }
     if (imageSrcs.length > 0 && false == imageSrcs[0].startsWith("http")) {
       var v = conv.BASE64.decode(imageSrcs[0].replaceFirst(new RegExp(".*,"), ''));

@@ -10,6 +10,7 @@ import 'deleteArticle/dialog.dart';
 
 import 'comp_articles.dart';
 import 'config.dart' as config;
+import 'package:k07me.prop/prop.dart' as prop;
 
 //
 @Component(
@@ -21,6 +22,9 @@ import 'config.dart' as config;
     <div #imagecont></div>
     <div #userinfocont></div>
     <button *ngFor='let t of artInfo.tags' (click)='onClickTag(t)'>{{t}}</button>
+    <div *ngIf='url!=""'>
+    <a href='{{url}}'>GOTO SITE</a>
+    </div>
     <div *ngIf='info.isUpdatable(artInfo.userName)'>
       <button (click)='onEdit()'>Edit</button>
       <button (click)='onDelete(myDialoga)'>Delete</button>
@@ -67,11 +71,14 @@ class ArticleComponent implements OnInit, DynamicItem {
 
 
   ArtInfoProp _artInfo = null;
+  String url = "";
 
   @Input()
   void set artInfo(ArtInfoProp v) {
     _artInfo = v;
-
+    NewArtProp newArtProp = null;
+    var vv = new prop.MiniProp.fromString(v.info);
+    url = vv.getString("url", "");
   }
 
   ArtInfoProp get artInfo => _artInfo;
