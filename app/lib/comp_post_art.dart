@@ -6,14 +6,18 @@ import 'package:k07me.netbox/netbox.dart';
 import 'inputimgage/dialog.dart';
 import 'dart:convert' as conv;
 import 'package:k07me.prop/prop.dart' as prop;
-
+import 'package:angular2_components/angular2_components.dart';
+import 'dart:async';
 //
 @Component(
     selector: "post-article-component",
-    directives: const [InputImageDialog],
+    directives: const [InputImageDialog,materialDirectives],
+    providers: const [materialProviders],
     template: """
     <div class="mybody">
       <h1>Post Article</h1>
+      <div>{{message}}</div>
+      <material-spinner *ngIf='isloading'></material-spinner>
       <div>{{artInfo.articleId}}</div>
       <div><label>Title</label><br>
       <input [(ngModel)]='artInfo.title' class='title'>
@@ -31,8 +35,8 @@ import 'package:k07me.prop/prop.dart' as prop;
       </div>
 
 
-      <button (click)='onUpdateIcon(myDialoga)'>add image</button>
-      <button #btn (click)='onPost(btn)'>Post</button>
+      <button (click)='onUpdateIcon(myDialoga)' *ngIf='!isloading'>add image</button>
+      <button #btn (click)='onPost(btn)' *ngIf='!isloading'>Post</button>
 
       <div *ngFor='let src of imageSrcs'>
         <img src='{{src}}'>
@@ -68,10 +72,13 @@ class PostArticleComponent implements OnInit {
   @Input()
   String accessToken = "";
 
+  bool isloading = false;
+
   String tag = "";
 
   String url = "";
 
+  String message = "";
 
   //
   //
@@ -99,18 +106,37 @@ class PostArticleComponent implements OnInit {
   }
 
   onPost(html.Element v) async {
-    NewArtProp newArtProp = null;
-    var v = new prop.MiniProp.fromMap({"url":url});
-    if(artInfo.articleId == "" || artInfo.articleId == "new" || artInfo.articleId == null) {
-      newArtProp = await artNBox.newArt(accessToken, artInfo.userName,title: artInfo.title, cont: artInfo.cont, //
-           props: {"s":"p"},tags: artInfo.tags,info:v.toJson());
-    } else {
-      newArtProp = await artNBox.updateArt(accessToken, artInfo.articleId, userName:artInfo.userName, title: artInfo.title, cont: artInfo.cont,//
-           props: {"s":"p"},tags: artInfo.tags,info:v.toJson());
-    }
-    if (imageSrcs.length > 0 && false == imageSrcs[0].startsWith("http")) {
-      var v = conv.BASE64.decode(imageSrcs[0].replaceFirst(new RegExp(".*,"), ''));
-      await artNBox.updateFile(accessToken, newArtProp.articleId, "", "icon", v);
+    try {
+      isloading = true;
+      message = "loading...";
+      NewArtProp newArtProp = null;
+      var v = new prop.MiniProp.fromMap({"url": url});
+      if (artInfo.articleId == "" || artInfo.articleId == "new" || artInfo.articleId == null) {
+        newArtProp = await artNBox.newArt(accessToken, artInfo.userName, title: artInfo.title,
+            cont: artInfo.cont,
+            //
+            props: {"s": "p"},
+            tags: artInfo.tags,
+            info: v.toJson());
+      } else {
+        newArtProp = await artNBox.updateArt(accessToken, artInfo.articleId, userName: artInfo.userName,
+            title: artInfo.title,
+            cont: artInfo.cont,
+            //
+            props: {"s": "p"},
+            tags: artInfo.tags,
+            info: v.toJson());
+      }
+      if (imageSrcs.length > 0 && false == imageSrcs[0].startsWith("http")) {
+        var v = conv.BASE64.decode(imageSrcs[0].replaceFirst(new RegExp(".*,"), ''));
+        await artNBox.updateFile(accessToken, newArtProp.articleId, "", "icon", v);
+      }
+      //
+      //
+      await new Future.delayed(new Duration(seconds: 1));
+      message = "complete";
+    } finally {
+      isloading = false;
     }
   }
 
