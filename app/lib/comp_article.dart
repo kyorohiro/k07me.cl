@@ -21,10 +21,10 @@ import 'package:k07me.prop/prop.dart' as prop;
     <h2>{{artInfo.title}}</h2>
     <div #imagecont></div>
     <div #userinfocont></div>
-    <button *ngFor='let t of artInfo.tags' (click)='onClickTag(t)'>{{t}}</button>
     <div *ngIf='url!=""'>
-    <a href='{{url}}'>GOTO SITE</a>
+      <a href='{{url}}' style='font-size:8px;' target="_blank">goto this site</a>
     </div>
+    <button *ngFor='let t of artInfo.tags' (click)='onClickTag(t)'>{{t}}</button>
     <div *ngIf='info.isUpdatable(artInfo.userName)'>
       <button (click)='onEdit()'>Edit</button>
       <button (click)='onDelete(myDialoga)'>Delete</button>
