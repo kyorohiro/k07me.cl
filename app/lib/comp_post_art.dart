@@ -21,6 +21,10 @@ import 'dart:convert' as conv;
       <input [(ngModel)]='tag' (keyup.enter)='onEnterTag()' class='content'><br>
       <button *ngFor='let t of artInfo.tags' (click)='onClickTag(t)'>(x) {{t}}</button>
       </div>
+      <div>
+      <label>URL</label><br>
+      <input [(ngModel)]='url' class='content'>
+      </div>
       <div><label>Message</label><br>
       <textarea [(ngModel)]='artInfo.cont' class='content'></textarea>
       </div>
@@ -61,10 +65,11 @@ class PostArticleComponent implements OnInit {
   ArtNBox artNBox = null;
 
   @Input()
-  String accessToken;
+  String accessToken = "";
 
+  String tag = "";
 
-  String tag;
+  String url = "";
 
 
   //
@@ -88,6 +93,7 @@ class PostArticleComponent implements OnInit {
         updateIcon(await artNBox.createBlobUrlFromKey(artInfo.iconUrl));
       }
     }
+    
   }
 
   onPost(html.Element v) async {
@@ -119,7 +125,6 @@ class PostArticleComponent implements OnInit {
     var v = artInfo.tags;
     v.add("${tag}");
     artInfo.tags =v;
-    print("==> ${tag} ${v}");
     tag = "";
   }
 
