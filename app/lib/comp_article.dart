@@ -98,15 +98,15 @@ class ArticleComponent implements OnInit, DynamicItem {
   }
 
   ArticleComponent(this.element,this._router, this._routeParams){
-    params["tag"] = _routeParams.get("tag");
-    params["user"] = _routeParams.get("user");
+    //params["tag"] = _routeParams.get("tag");
+    //params["user"] = _routeParams.get("user");
     var elm = element.nativeElement;
     print("${elm}");
     (elm as html.Element).style.width = "${imageWidth+4}px";
-//    (elm as html.Element).style.boxShadow = "10px 10px 5px grey;";
     (elm as html.Element).style.boxShadow = "2px 2px 1px grey";
     (elm as html.Element).style.display = 'inline-block';
     (elm as html.Element).style.position = "relative";
+    (elm as html.Element).style.visibility = "hidden";
   }
 
 
@@ -159,7 +159,11 @@ class ArticleComponent implements OnInit, DynamicItem {
             treeSanitizer: html.NodeTreeSanitizer.trusted));
     this.height =(element.nativeElement as html.Element).clientHeight;
     print("==height  :  ${height}");
-    parent.append(this);
+    if(parent != null) {
+      parent.append(this);
+    }
+    var elm = element.nativeElement;
+    (elm as html.Element).style.visibility = "visible";
   }
 
   onEdit(){

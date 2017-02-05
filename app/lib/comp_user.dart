@@ -13,13 +13,13 @@ import 'config.dart' as config;
 //
 @Component(
   selector: "user-component",
-  directives: const[InputImageDialog, UpdateUserDialog],
+  directives: const[InputImageDialog, UpdateUserDialog,ROUTER_DIRECTIVES],
   template: """
     <div>
     <img #image1 *ngIf='iconUrl==""' src='/assets/egg.png'>
     <img #image *ngIf='iconUrl!=""' src='{{iconUrl}}'>
     <div style='font-size:24px;'>{{userInfo.displayName}}</div>
-    <div style='font-size:8px;'>({{userInfo.userName}})</div>
+    <a [routerLink]="['User',{name:userInfo.userName}]" style='font-size:8px;'>{{userInfo.userName}}</a>
 
     <div #userinfocont></div>
 
