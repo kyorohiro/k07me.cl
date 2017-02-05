@@ -35,7 +35,7 @@ import 'config.dart' as config;
     """,
     ]
 )
-class ArticleComponent implements OnInit {
+class ArticleComponent implements OnInit, DynamicItem {
   final RouteParams _routeParams;
   final Router _router;
   String iconUrl = "";
@@ -46,7 +46,12 @@ class ArticleComponent implements OnInit {
   @Input()
   int contentWidth = 210;
 
+  @Input()
+  ArticlesComponent parent = null;
 
+  final ElementRef element;
+  int get width => 220;
+  int get height => 300;
 
   @ViewChild('image')
   set image(ElementRef elementRef) {
@@ -65,7 +70,7 @@ class ArticleComponent implements OnInit {
   @Input()
   void set artInfo(ArtInfoProp v) {
     _artInfo = v;
-    updateInfo();
+    parent.append(this);
   }
 
   ArtInfoProp get artInfo => _artInfo;
@@ -83,7 +88,7 @@ class ArticleComponent implements OnInit {
     _mainElement.style.width ="${contentWidth}px";
   }
 
-  ArticleComponent(ElementRef element,this._router, this._routeParams){
+  ArticleComponent(this.element,this._router, this._routeParams){
     params["tag"] = _routeParams.get("tag");
     params["user"] = _routeParams.get("user");
     var elm = element.nativeElement;
@@ -92,6 +97,7 @@ class ArticleComponent implements OnInit {
 //    (elm as html.Element).style.boxShadow = "10px 10px 5px grey;";
     (elm as html.Element).style.boxShadow = "2px 2px 1px grey";
     (elm as html.Element).style.display = 'inline-block';
+    (elm as html.Element).style.position = "relative";
   }
 
 
@@ -115,6 +121,7 @@ class ArticleComponent implements OnInit {
       }
     }
     updateContent(artInfo.cont);
+
   }
 
   updateContent(String cont) {

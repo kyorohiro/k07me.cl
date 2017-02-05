@@ -4,15 +4,15 @@ import 'package:cl/config.dart' as config;
 import 'comp_users.dart';
 import 'package:k07me.netbox/netbox.dart';
 import 'comp_article.dart';
+import 'dynablock.dart' as dyna;
 
 @Component(
     selector: "arts-component",
     directives: const [ArticleComponent],
     template: """
     <div class="mybody">
-    <h1>Articles</h1>
-    <div *ngFor='let artInfo of artInfos'>
-        <art-component [info]='info' [artInfo]='artInfo'  ></art-component>
+    <div *ngFor='let artInfo of artInfos' style='position:relative;'>
+        <art-component [parent]='own' [info]='info' [artInfo]='artInfo'  ></art-component>
     </div>
     </div>
   """
@@ -21,8 +21,9 @@ class ArticlesComponent implements OnInit {
   final Router _router;
   final RouteParams _routeParams;
   ArticleComponentInfo info;
-
+  ArticlesComponent own = null;
   ArticlesComponent(this._router, this._routeParams) {
+    own = this;
     info = new MyArticleComponentInfo(parent: this);
   }
 
@@ -61,9 +62,28 @@ class ArticlesComponent implements OnInit {
       artInfos.add(artInfo);
     }
   }
-
+  //
+  //
+  dyna.DynaBlockCore dynaCore = new dyna.DynaBlockCore();
+  append(DynamicItem ap) {
+    if(ap.element == null) {
+      return;
+    }
+    var elm = ap.element.nativeElement;
+    dyna.FreeSpaceInfo info = dynaCore.addBlock(
+        ap.width + 10, ap.height + 10);
+    elm.style.position = "absolute";
+    elm.style.left = "${info.xs}px";
+    elm.style.top = "${info.y}px";
+    print(">>lt: ${elm.style.left}px ${elm.style.top}px");
+  }
 }
 
+abstract class DynamicItem {
+  ElementRef get element;
+  int get width;
+  int get height;
+}
 
 class MyArticleComponentInfo extends ArticleComponentInfo {
   final ArticlesComponent parent;
