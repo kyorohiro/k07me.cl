@@ -5,6 +5,7 @@ import 'dart:html' as html;
 import 'package:k07me.netbox/netbox.dart';
 import 'inputimgage/dialog.dart';
 import 'dart:convert' as conv;
+import 'package:k07me.prop/prop.dart' as prop;
 
 //
 @Component(
@@ -93,7 +94,8 @@ class PostArticleComponent implements OnInit {
         updateIcon(await artNBox.createBlobUrlFromKey(artInfo.iconUrl));
       }
     }
-    
+    prop.MiniProp infoProp = new prop.MiniProp.fromString(artInfo.info);
+    url = infoProp.getString("url", "");
   }
 
   onPost(html.Element v) async {

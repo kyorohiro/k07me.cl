@@ -41,6 +41,9 @@ import 'comp_post_art.dart';
   <div *ngIf='rootConfig.cookie.accessToken == ""'>
   <a class='mylr' (click)='onLogin(myDialoga)'>Login</a>
   </div>
+    <div *ngIf='rootConfig.cookie.accessToken != ""'>
+  <a class='mylr' [routerLink]="['Post']">New</a>
+  </div>
   <div *ngIf='rootConfig.cookie.accessToken != ""'>
   <a class='mylr' (click)='onLogout(myLogoutDialoga)'>Logout</a>
   </div>
@@ -94,12 +97,13 @@ import 'comp_post_art.dart';
     display: block;
     float: right;
     font-size: 16px;
-    color: #000000;
+    color: #ffffff;
     text-decoration: none;
-    padding: 8px 16px;
+    padding: 8px 2px;
     margine: 1px;
     text-align: center;
-    border: 1px solid #555;
+    border: 1px solid #ffffff;
+    background-color: #555;
   }
   """],
 )
@@ -151,57 +155,3 @@ class AppComponent implements OnInit {
   ngOnInit() {
   }
 }
-
-/*
-// Copyright (c) 2017, kyorohiro. All rights reserved. Use of this source code
-// is governed by a BSD-style license that can be found in the LICENSE file.
-
-import 'package:angular2/core.dart';
-import 'package:angular2/router.dart';
-import 'package:cl/config.dart' as config;
-import 'comp_users.dart';
-import 'package:k07me.netbox/netbox.dart';
-import 'comp_article.dart';
-
-@Component(
-    selector: "my-arts",
-    directives: const [ArticleComponent],
-    template:  """
-    <div class="mybody">
-    <h1>Articles</h1>
-    <div *ngFor='let artInfo of artInfos'>
-        <art-component [userNBox]='rootConfig.appNBox.userNBox' [artInfo]='artInfo'></art-component>
-    </div>
-    </div>
-  """,
-    styles: const[
-      """
-    .mybody {
-      display: block;
-      height: 600px;
-    }
-    """,
-    ]
-)
-class ArtsPage implements OnInit {
-  final RouteParams _routeParams;
-  ArtsPage(this._routeParams);
-  config.AppConfig rootConfig = config.AppConfig.inst;
-
-  List<ArtInfoProp> artInfos = [];
-
-  ngOnInit() {
-    update();
-  }
-
-  update() async {
-    ArtNBox artnBox = rootConfig.appNBox.artNBox;
-    ArtKeyListProp list = await artnBox.findArticle("");
-    for(String key in list.keys) {
-      ArtInfoProp artInfo = await artnBox.getArtFromStringId(key);
-      artInfos.add(artInfo);
-    }
-  }
-}
-
- */
