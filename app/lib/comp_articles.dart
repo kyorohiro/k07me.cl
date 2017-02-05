@@ -15,15 +15,7 @@ import 'comp_article.dart';
         <art-component [info]='info' [artInfo]='artInfo'  ></art-component>
     </div>
     </div>
-  """,
-    styles: const[
-      """
-    .mybody {
-      display: block;
-      height: 600px;
-    }
-    """,
-    ]
+  """
 )
 class ArticlesComponent implements OnInit {
   final Router _router;
