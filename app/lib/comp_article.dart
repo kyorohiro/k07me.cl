@@ -18,8 +18,7 @@ import 'config.dart' as config;
     template: """
     <div>
     <h2>{{artInfo.title}}</h2>
-    <img #image *ngIf='iconUrl!=""' src='{{iconUrl}}'>
-
+    <div #imagecont></div>
     <div #userinfocont></div>
     <button *ngFor='let t of artInfo.tags' (click)='onClickTag(t)'>{{t}}</button>
     <div *ngIf='info.isUpdatable(artInfo.userName)'>
@@ -50,15 +49,17 @@ class ArticleComponent implements OnInit, DynamicItem {
   ArticlesComponent parent = null;
 
   final ElementRef element;
-  int get width => 220;
-  int get height => 300;
+  int width = 220;
+  int height = 300;
 
-  @ViewChild('image')
+  html.Element _imageContElm = null;
+  @ViewChild('imagecont')
   set image(ElementRef elementRef) {
     if(elementRef == null || elementRef.nativeElement == null) {
       return;
     }
-    (elementRef.nativeElement as html.ImageElement).style.width = "${imageWidth}px";
+    _imageContElm  = elementRef.nativeElement;
+
   }
 
   @Input()
@@ -70,7 +71,7 @@ class ArticleComponent implements OnInit, DynamicItem {
   @Input()
   void set artInfo(ArtInfoProp v) {
     _artInfo = v;
-    parent.append(this);
+
   }
 
   ArtInfoProp get artInfo => _artInfo;
@@ -113,8 +114,27 @@ class ArticleComponent implements OnInit, DynamicItem {
       try {
         if(artInfo.iconUrl == null || artInfo.iconUrl == ""){
           iconUrl = "";
+          if(_imageContElm != null) {
+            _imageContElm.children.clear();
+          }
         } else {
+          html.ImageElement imgElm = new html.ImageElement(width:imageWidth);
+          Completer c = new Completer();
+          imgElm.onLoad.listen((e){
+            c.complete("");
+          });
+          imgElm.onError.listen((e){
+            c.complete("");
+          });
           iconUrl = await info.artNBox.createBlobUrlFromKey(artInfo.iconUrl);
+          imgElm.src = iconUrl;
+          print("-->A 1");
+
+          await c.future;
+          print("-->A 2");
+          _imageContElm.style.width = "${imageWidth}px";
+          _imageContElm.children.clear();
+          _imageContElm.children.add(imgElm);
         }
       } catch(e) {
         print("--e-- ${e}");
@@ -129,6 +149,9 @@ class ArticleComponent implements OnInit, DynamicItem {
     _mainElement.children.add(//
         new html.Element.html("""<div> ${cont.replaceAll("\n","<br>")}</div>""",//
             treeSanitizer: html.NodeTreeSanitizer.trusted));
+    this.height =(element.nativeElement as html.Element).clientHeight;
+    print("==height  :  ${height}");
+    parent.append(this);
   }
 
   onEdit(){
