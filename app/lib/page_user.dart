@@ -22,9 +22,6 @@ import 'comp_articles.dart';
     <div class="mybody">
     <user-component  [userInfo]='userInfo'></user-component>
     <br>
-    <div *ngIf='isMe'>
-    <button (click)='onClick()'> New Article</button>
-    </div>
 
     <arts-component
      [params]='params'></arts-component>
@@ -61,10 +58,6 @@ class UserPage implements OnInit {
   ngOnInit() {
     twitterLoginUrl = config.AppConfig.inst.twitterLoginUrl;
     _init();
-  }
-
-  onClick() {
-    _router.navigate(["Post",{"id":"new"}]);
   }
 
   _init() async {
