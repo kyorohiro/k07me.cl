@@ -15,10 +15,11 @@ import 'package:k07me.prop/prop.dart' as prop;
 //
 @Component(
     selector: "art-component",
-    directives: const[DeleteArticleDialog],
+    directives: const[DeleteArticleDialog,ROUTER_DIRECTIVES],
     template: """
     <div>
     <h2>{{artInfo.title}}</h2>
+    <a [routerLink]="['User',{name:artInfo.userName}]">{{artInfo.userName}}</a>
     <div #imagecont></div>
     <div #userinfocont></div>
     <div *ngIf='url!=""'>
