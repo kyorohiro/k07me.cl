@@ -5,6 +5,7 @@ import 'comp_users.dart';
 import 'package:k07me.netbox/netbox.dart';
 import 'comp_article.dart';
 import 'dynablock.dart' as dyna;
+import 'dart:html' as html;
 
 @Component(
     selector: "arts-component",
@@ -22,7 +23,8 @@ class ArticlesComponent implements OnInit {
   final RouteParams _routeParams;
   ArticleComponentInfo info;
   ArticlesComponent own = null;
-  ArticlesComponent(this._router, this._routeParams) {
+  final ElementRef element;
+  ArticlesComponent(this.element, this._router, this._routeParams) {
     own = this;
     info = new MyArticleComponentInfo(parent: this);
   }
@@ -76,6 +78,8 @@ class ArticlesComponent implements OnInit {
     elm.style.left = "${info.xs}px";
     elm.style.top = "${info.y}px";
     print(">>lt: ${elm.style.left}px ${elm.style.top}px");
+    (element.nativeElement as html.Element).style.display = "block";
+    (element.nativeElement as html.Element).style.height = "${dynaCore.rootHeight+20}px";
   }
 }
 

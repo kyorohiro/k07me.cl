@@ -23,7 +23,7 @@ import 'comp_articles.dart';
       """
     .mybody {
       display: block;
-      height: 600px;
+      min-height: 400px;
     }
     """,
     ]
