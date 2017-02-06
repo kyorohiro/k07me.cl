@@ -23,7 +23,7 @@ import 'package:k07me.netbox/netbox.dart';
       """
     .mybody {
       display: block;
-      height: 600px;
+      min-height: 600px;
     }
     """,
     ]
